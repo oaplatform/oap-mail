@@ -25,7 +25,6 @@ package oap.mail;
 
 
 import lombok.extern.slf4j.Slf4j;
-import oap.storage.Storage;
 import oap.util.Strings;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.QCodec;
@@ -56,17 +55,15 @@ import java.util.regex.Pattern;
 public class DefaultMailman implements Mailman, Runnable {
     private final String smtpHost;
     private final int smtpPort;
-    private final Storage<Message> storage;
     protected String username;
     protected String password;
     private boolean startTls;
     private ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<>();
 
-    public DefaultMailman( String smtpHost, int smtpPort, boolean startTls, Storage<Message> storage ) {
+    public DefaultMailman( String smtpHost, int smtpPort, boolean startTls ) {
         this.smtpHost = smtpHost;
         this.smtpPort = smtpPort;
         this.startTls = startTls;
-        this.storage = storage;
         initMailCap();
 
     }
@@ -106,10 +103,6 @@ public class DefaultMailman implements Mailman, Runnable {
         }
     }
 
-    public void start() {
-        storage.forEach( messages::add );
-    }
-
     private void initMailCap() {
         MailcapCommandMap mc = ( MailcapCommandMap ) CommandMap.getDefaultCommandMap();
         mc.addMailcap( "text/html;; x-java-content-handler=com.sun.mail.handlers.text_html" );
@@ -128,7 +121,6 @@ public class DefaultMailman implements Mailman, Runnable {
         while( ( message = this.messages.poll() ) != null ) {
             try {
                 sendNow( message );
-                storage.delete( message.id );
             } catch( MailException e ) {
                 log.error( e.toString(), e );
                 failed.add( message );
@@ -141,7 +133,6 @@ public class DefaultMailman implements Mailman, Runnable {
     @Override
     public void enqueue( Message message ) {
         messages.offer( message );
-        storage.store( message );
     }
 
     public void sendNow( Message message ) throws MailException {
