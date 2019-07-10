@@ -37,15 +37,15 @@ public class SaxMessageParser extends DefaultHandler {
     private String characters = "";
     private Attachment attachment;
 
-    public void startDocument() throws SAXException {
+    public void startDocument() {
         message = new Message();
     }
 
-    public void characters( char ch[], int start, int length ) throws SAXException {
+    public void characters( char[] ch, int start, int length ) {
         characters += new String( ch, start, length );
     }
 
-    public void startElement( String uri, String localName, String qName, Attributes attributes ) throws SAXException {
+    public void startElement( String uri, String localName, String qName, Attributes attributes ) {
         characters = "";
         if( "body".equals( qName ) ) message.setContentType( attributes.getValue( "type" ) );
         if( "attachment".equals( qName ) ) {
@@ -55,7 +55,7 @@ public class SaxMessageParser extends DefaultHandler {
         }
     }
 
-    public void endElement( String uri, String localName, String qName ) throws SAXException {
+    public void endElement( String uri, String localName, String qName ) {
         if( "subject".equals( qName ) ) message.setSubject( characters );
         if( "body".equals( qName ) ) message.setBody( characters );
         if( "attachment".equals( qName ) ) {

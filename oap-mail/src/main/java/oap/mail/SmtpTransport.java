@@ -1,0 +1,111 @@
+package oap.mail;
+
+import lombok.extern.slf4j.Slf4j;
+import oap.util.Strings;
+
+import javax.activation.CommandMap;
+import javax.activation.DataHandler;
+import javax.activation.MailcapCommandMap;
+import javax.mail.Authenticator;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Slf4j
+public class SmtpTransport {
+    public final String host;
+    public final int port;
+    public final boolean tls;
+    public final Authenticator authenticator;
+    private Properties properties = new Properties();
+
+    public SmtpTransport( String host, int port, boolean tls, Authenticator authenticator ) {
+        this.host = host;
+        this.port = port;
+        this.tls = tls;
+        this.authenticator = authenticator;
+        properties.put( "mail.smtp.host", host );
+        properties.put( "mail.smtp.port", String.valueOf( port ) );
+        properties.put( "mail.smtp.starttls.enable", String.valueOf( tls ) );
+        properties.put( "mail.smtp.auth", String.valueOf( authenticator != null ) );
+
+
+    }
+
+    static {
+        MailcapCommandMap mc = ( MailcapCommandMap ) CommandMap.getDefaultCommandMap();
+        mc.addMailcap( "text/html;; x-java-content-handler=com.sun.mail.handlers.text_html" );
+        mc.addMailcap( "text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml" );
+        mc.addMailcap( "text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain" );
+        mc.addMailcap( "multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed" );
+        mc.addMailcap( "message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822" );
+        CommandMap.setDefaultCommandMap( mc );
+    }
+
+    public void send( Message message ) {
+        Session session = Session.getInstance( properties, authenticator );
+        MimeMessage mimeMessage = new MimeMessage( session );
+        try {
+            mimeMessage.setFrom( message.getFrom().toInternetAddress() );
+            for( MailAddress recipient : message.getTo() )
+                mimeMessage.addRecipient( javax.mail.Message.RecipientType.TO, recipient.toInternetAddress() );
+            for( MailAddress recipient : message.getCc() )
+                mimeMessage.addRecipient( javax.mail.Message.RecipientType.CC, recipient.toInternetAddress() );
+            for( MailAddress recipient : message.getBcc() )
+                mimeMessage.addRecipient( javax.mail.Message.RecipientType.BCC, recipient.toInternetAddress() );
+            mimeMessage.setSubject( Strings.toQuotedPrintable( message.getSubject() ) );
+            mimeMessage.setHeader( "Content-Transfer-Encoding", "quoted-printable" );
+            if( message.getAttachments().isEmpty() ) {
+                mimeMessage.setContent( message.getBody(), message.getContentType() + "; charset=UTF-8" );
+            } else {
+                HashSet<String> cidIds = new HashSet<>();
+                MimeMultipart multipart;
+                if( "text/html".equalsIgnoreCase( message.getContentType() ) ) {
+                    multipart = new Attachments.HtmlMimeMultipart();
+                    try {
+                        Matcher m = Pattern.compile( "[\"']cid:(.+)[\"']" ).matcher( message.getBody() );
+                        while( m.find() )
+                            cidIds.add( m.group( 1 ) );
+                    } catch( Exception e ) {
+                        log.warn( "Error scanning text/html body for cid-s", e );
+                    }
+                } else {
+                    multipart = new MimeMultipart();
+                }
+                MimeBodyPart part = new MimeBodyPart();
+                part.setContent( message.getBody(), message.getContentType() + "; charset=UTF-8" );
+                multipart.addBodyPart( part );
+                for( Attachment attachment : message.getAttachments() ) {
+                    part = new MimeBodyPart();
+                    if( attachment.getFile() == null )
+                        part.setContent( attachment.getContent(), Attachments.makeMimeType( attachment ) );
+                    else
+                        part.setDataHandler( new DataHandler( new Attachments.MimeFileDataSource( attachment ) ) );
+                    String cid = attachment.getContentId();
+                    if( cid != null ) {
+                        if( cidIds.contains( cid ) )
+                            cid = "<" + cid + ">";
+                        part.setHeader( "Content-ID", cid );
+                    }
+                    multipart.addBodyPart( part );
+                }
+                mimeMessage.setContent( multipart );
+            }
+            Transport.send( mimeMessage );
+            log.debug( "message sent to " + Arrays.asList( message.getTo() ) + ( message.getBcc().length > 0
+                ? ", bcc to " + Arrays.asList( message.getBcc() ) : "" ) );
+        } catch( MessagingException e ) {
+            throw new MailException( e );
+        }
+
+    }
+
+}

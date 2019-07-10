@@ -21,11 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package oap.mail;
 
-public interface Mailman {
-    void enqueue( Message message );
 
-    void sendNow( Message message ) throws MailException;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class Mailman implements Runnable {
+    private SmtpTransport transport;
+    private MailQueue queue;
+
+    public Mailman( SmtpTransport transport, MailQueue queue ) {
+        this.transport = transport;
+        this.queue = queue;
+    }
+
+    public void run() {
+        queue.processing( message -> {
+            try {
+                transport.send( message );
+                return true;
+            } catch( Exception e ) {
+                log.error( e.getMessage(), e );
+                return false;
+            }
+        } );
+    }
+
+    public void send( Message message ) {
+        queue.add( message );
+    }
+
 }

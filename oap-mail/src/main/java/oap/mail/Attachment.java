@@ -25,6 +25,7 @@ package oap.mail;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.ToString;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -33,6 +34,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class Attachment {
     private final String contentId;
     private final String file;
+    @JacksonXmlProperty( isAttribute = true )
     private final String contentType;
     private final String name;
     private String content;

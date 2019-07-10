@@ -24,6 +24,8 @@
 package oap.mail;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.ToString;
 import oap.util.Id;
 
@@ -34,8 +36,6 @@ import static java.util.Collections.emptyList;
 
 @ToString
 public class Message {
-    @Id
-    public String id;
     private String subject;
     private String body;
     private ArrayList<Attachment> attachments = new ArrayList<Attachment>();
@@ -46,15 +46,10 @@ public class Message {
     private String contentType = "text/plain";
 
     @JsonCreator
-    public Message( String id, String subject, String body, List<Attachment> attachments ) {
-        this.id = id;
+    public Message( String subject, String body, List<Attachment> attachments ) {
         this.body = body;
         this.subject = subject;
-        this.attachments.addAll( attachments );
-    }
-
-    public Message( String subject, String body, List<Attachment> attachments ) {
-        this( null, subject, body, attachments );
+        if( attachments != null ) this.attachments.addAll( attachments );
     }
 
     public Message() {
@@ -125,11 +120,4 @@ public class Message {
         attachments.add( attachment );
     }
 
-    public interface Mime {
-        String TEXT_PLAIN = "text/plain";
-        String TEXT_HTML = "text/html";
-        String IMAGE_JPEG = "image/jpeg";
-        String IMAGE_GIF = "image/gif";
-        String IMAGE_PNG = "image/png";
-    }
 }
