@@ -7,6 +7,7 @@
 oapmail サーバ は、管理しているoapmailサーバから接続が切断されました。
 <br>
 <img src="cid:tux"/>
+<img src="cid:logo"/>
 source: <a href="cid:source">result</a>
 <br><i>--
 OAP Mail  <a href='http://github.com/oaplatform'>OAP</a></i>]]>
@@ -14,6 +15,7 @@ OAP Mail  <a href='http://github.com/oaplatform'>OAP</a></i>]]>
 	<attachment type="text/plain" content-id="result" name="oapmail サーバ">
 oapmail サーバ は、管理しているoapmailサーバから接続が切断されました。
 	</attachment>
+	<attachment type="image/jpeg" content-id="logo" name="logo" file="$logo"/>
 	<attachment type="image/jpeg" content-id="tux" file="oap-mail/src/test/resources/tux.jpeg" name="picture"/>
 	<attachment type="image/jpeg" content-id="att" file="oap-mail/src/test/resources/tux.jpeg" name="att.jpg"/>
 	<attachment type="text/plain" content-id="source" file="oap-mail/src/test/java/oap/mail/TestGMail.java"/>

@@ -12,10 +12,12 @@ import java.util.function.Predicate;
 public class MailQueue {
 
     private ConcurrentLinkedQueue<Message> queue = new ConcurrentLinkedQueue<>();
-    private final Path location;
+    private Path location;
 
     public MailQueue( Path location ) {
-        this.location = location.resolve( "mail.gz" );
+        if( location != null ) {
+            this.location = location.resolve( "mail.gz" );
+        }
         load();
     }
 
@@ -37,7 +39,7 @@ public class MailQueue {
     }
 
     private void load() {
-        queue.addAll( Binder.json.unmarshal( location, new TypeRef<>() {} ) );
+        if( location != null ) queue.addAll( Binder.json.unmarshal( location, new TypeRef<>() {} ) );
     }
 
     public List<Message> messages() {
