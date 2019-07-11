@@ -8,7 +8,7 @@
     
 ## Mocking
 
-To disable message sending just turn of scheduling
+To disable message sending just turn off scheduling
 
     oap-mail-mailman.supervision.schedule = false
     
