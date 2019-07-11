@@ -2,9 +2,9 @@
 
     oap-mail-password-authenticator.parameters.username = login
     oap-mail-password-authenticator.parameters.password = password
-    oap-mail-smtp-transport.host = smtp.gmail.com
-    oap-mail-smtp-transport.port = 587
-    oap-mail-smtp-transport.tls = true
+    oap-mail-smtp-transport.parameters.host = smtp.gmail.com
+    oap-mail-smtp-transport.parameters.port = 587
+    oap-mail-smtp-transport.parameters.tls = true
     
 ## Mocking
 
