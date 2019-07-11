@@ -7,8 +7,11 @@ import org.apache.commons.codec.net.QCodec;
 import javax.activation.FileDataSource;
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
+import javax.activation.URLDataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMultipart;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Slf4j
 public class Attachments {
@@ -32,7 +35,7 @@ public class Attachments {
                     String sub = encoded.substring( 10, encoded.length() - 2 );
                     if( sub.equals( name ) ) encoded = name;
                 } catch( EncoderException e ) {
-                    log.warn( "encoging error for: " + name, e );
+                    log.warn( "encoding error for: " + name, e );
                 }
                 mt.setParameter( "name", encoded );
             }
@@ -71,6 +74,19 @@ public class Attachments {
 
         MimeFileDataSource( Attachment attachment ) throws MessagingException {
             super( attachment.getFile() );
+            mimeType = makeMimeType( attachment );
+        }
+
+        public String getContentType() {
+            return mimeType != null ? mimeType : super.getContentType();
+        }
+    }
+
+    static class MimeURLDataSource extends URLDataSource {
+        String mimeType;
+
+        MimeURLDataSource( Attachment attachment ) throws MessagingException, MalformedURLException {
+            super( new URL( attachment.getFile() ) );
             mimeType = makeMimeType( attachment );
         }
 

@@ -13,6 +13,7 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
@@ -84,18 +85,27 @@ public class SmtpTransport {
                 part.setContent( message.getBody(), message.getContentType() + "; charset=UTF-8" );
                 multipart.addBodyPart( part );
                 for( Attachment attachment : message.getAttachments() ) {
-                    part = new MimeBodyPart();
-                    if( attachment.getFile() == null )
-                        part.setContent( attachment.getContent(), Attachments.makeMimeType( attachment ) );
-                    else
-                        part.setDataHandler( new DataHandler( new Attachments.MimeFileDataSource( attachment ) ) );
-                    String cid = attachment.getContentId();
-                    if( cid != null ) {
-                        if( cidIds.contains( cid ) )
-                            cid = "<" + cid + ">";
-                        part.setHeader( "Content-ID", cid );
+                    try {
+                        part = new MimeBodyPart();
+                        if( attachment.getFile() == null )
+                            part.setContent( attachment.getContent(), Attachments.makeMimeType( attachment ) );
+                        else {
+                            if (attachment.getFile().startsWith( "http" )) {
+                                part.setDataHandler( new DataHandler( new Attachments.MimeURLDataSource( attachment ) ) );
+                            } else {
+                                part.setDataHandler( new DataHandler( new Attachments.MimeFileDataSource( attachment ) ) );
+                            }
+                        }
+                        String cid = attachment.getContentId();
+                        if( cid != null ) {
+                            if( cidIds.contains( cid ) )
+                                cid = "<" + cid + ">";
+                            part.setHeader( "Content-ID", cid );
+                        }
+                        multipart.addBodyPart( part );
+                    } catch( MalformedURLException e) {
+                        log.warn( "unable to attach file to email from URL {" + attachment.getFile() + "}", e );
                     }
-                    multipart.addBodyPart( part );
                 }
                 mimeMessage.setContent( multipart );
             }
