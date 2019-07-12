@@ -2,13 +2,10 @@ package oap.mail;
 
 import oap.json.Binder;
 import oap.reflect.TypeRef;
-import oap.storage.Metadata;
 import oap.util.Lists;
 import oap.util.Stream;
 
-import javax.mail.MessageAware;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Predicate;
@@ -43,8 +40,7 @@ public class MailQueue {
     }
 
     private void load() {
-        List<Message> messages = Binder.json.unmarshal( new TypeRef<>() {}, location );
-        if ( messages != null) queue.addAll( messages );
+        queue.addAll( Binder.json.unmarshal( new TypeRef<List<Message>>() {}, location ).orElse( Lists.empty() ) );
     }
 
     public List<Message> messages() {
