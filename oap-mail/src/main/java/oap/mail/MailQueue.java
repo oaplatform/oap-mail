@@ -43,7 +43,8 @@ public class MailQueue {
     }
 
     private void load() {
-        if( location != null ) queue.addAll( Binder.json.unmarshal( new TypeRef<List<Message>>() {}, location ) );
+        List<Message> messages = Binder.json.unmarshal( new TypeRef<>() {}, location );
+        if ( messages != null) queue.addAll( messages );
     }
 
     public List<Message> messages() {

@@ -39,4 +39,5 @@ target
 /.idea/uiDesigner.xml
 /.idea/compiler.xml
 gmailauth.conf
+.flattened-pom.xml
 
