@@ -38,7 +38,7 @@ public class TextMessageParser implements MessageParser {
 
         ArrayList<Attachment> attachments = new ArrayList<>();
         for( int i = 3; i < values.length; i++ )
-            attachments.add( new Attachment( Message.Mime.TEXT_PLAIN, values[i] ) );
+            attachments.add( new Attachment( "text/plain", values[i] ) );
         return new Message( values[1], values[2], attachments );
     }
 }

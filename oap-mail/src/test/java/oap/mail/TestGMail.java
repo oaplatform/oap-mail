@@ -23,19 +23,34 @@
  */
 package oap.mail;
 
-import oap.storage.IdentifierBuilder;
-import oap.storage.MemoryStorage;
-
-import static oap.storage.Storage.Lock.SERIALIZED;
+import oap.io.Resources;
 
 public class TestGMail {
 
+    /**
+     * put gmailauth.conf in test/resources. Dont worry it's in .gitignore:
+     *
+     * username=aaa@gmail.com
+     * password=whatever
+     *
+     */
+    @SuppressWarnings( "OptionalGetWithoutIsPresent" )
     public static void main( String[] args ) throws MailException {
-        DefaultMailman queue = new DefaultMailman( "smtp.gmail.com", 587, true,
-            new MemoryStorage<>( IdentifierBuilder.<Message>identify( m -> m.id, ( m, id ) -> m.id = id ).build(), SERIALIZED ) );
-        Message message = Template.of( "/xjapanese" ).get().buildMessage();
-        message.setFrom( MailAddress.of( "Україна", "vladimir.kirichenko@gmail.com" ) );
-        message.setTo( MailAddress.of( "Little Green Mail", "vova@qupletech.com" ) );
-        queue.sendNow( message );
+        Resources.readProperties( TestGMail.class, "/gmailauth.conf" );
+        Resources.url( TestGMail.class, "/gmailauth.conf" ).ifPresentOrElse( auth -> {
+            PasswordAuthenticator authenticator = new PasswordAuthenticator( auth );
+            SmtpTransport transport = new SmtpTransport( "smtp.gmail.com", 587, true, authenticator );
+            Mailman mailman = new Mailman( transport, new MailQueue() );
+            Template template = Template.of( "/xjapanese" ).get();
+            template.bind( "logo",
+                "https://assets.coingecko.com/coins/images/4552/small/0xcert.png?1547039841" );
+            Message message = template.buildMessage();
+            message.setFrom( MailAddress.of( "Україна", "vladimir.kirichenko@gmail.com" ) );
+            message.setTo( MailAddress.of( "Little Green Mail", "vk@xenoss.io" ) );
+            mailman.send( message );
+            mailman.run();
+        }, () -> {
+            throw new RuntimeException( "see javadoc!" );
+        } );
     }
 }
