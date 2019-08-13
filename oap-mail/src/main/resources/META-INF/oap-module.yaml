@@ -8,9 +8,6 @@ services:
     parameters:
       authenticator: "@service:oap-mail-password-authenticator"
 
-  send-grid-transport:
-    implementation: oap.mail.SendGrditTransport
-
   oap-mail-queue:
     implementation: oap.mail.MailQueue
 

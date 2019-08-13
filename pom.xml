@@ -50,6 +50,7 @@
 
     <modules>
         <module>oap-mail</module>
+        <module>sendgrid-mail</module>
     </modules>
 
     <properties>

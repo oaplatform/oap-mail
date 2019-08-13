@@ -1,0 +1,5 @@
+name: sendgrid-mail
+services:
+  oap-mail-smtp-transport:
+    profile: sendgrid
+    implementation: oap.mail.SendGrditTransport

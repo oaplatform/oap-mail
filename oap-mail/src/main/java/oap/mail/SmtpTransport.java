@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class SmtpTransport {
+public class SmtpTransport implements oap.mail.Transport {
     public final String host;
     public final int port;
     public final boolean tls;
