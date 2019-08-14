@@ -50,14 +50,16 @@
 
     <modules>
         <module>oap-mail</module>
-        <module>sendgrid-mail</module>
+        <module>oap-mail-sendgrid</module>
     </modules>
 
     <properties>
-        <revision>2.2.0</revision>
+        <revision>2.2.1</revision>
+
+        <sendgrid.version>4.4.1</sendgrid.version>
         <maven.compiler.source>12</maven.compiler.source>
         <maven.compiler.target>12</maven.compiler.target>
-        <oap.version>4.19.3</oap.version>
+        <oap.version>4.21.1</oap.version>
         <lombok.version>1.18.6</lombok.version>
     </properties>
 

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package oap.sendgrid;
+package oap.mail.sendgrid;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;

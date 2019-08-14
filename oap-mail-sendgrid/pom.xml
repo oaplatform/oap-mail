@@ -5,15 +5,12 @@
     <parent>
         <artifactId>oap-mail-parent</artifactId>
         <groupId>oap</groupId>
-        <version>2.2.0</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>oap-mail-sendgrid</artifactId>
 
-    <properties>
-        <sendgrid-java.version>4.4.1</sendgrid-java.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>oap</groupId>
@@ -24,7 +21,7 @@
         <dependency>
             <groupId>com.sendgrid</groupId>
             <artifactId>sendgrid-java</artifactId>
-            <version>${sendgrid-java.version}</version>
+            <version>${sendgrid.version}</version>
         </dependency>
 
         <dependency>
