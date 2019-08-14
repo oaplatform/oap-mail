@@ -1,14 +1,18 @@
-## OAP SendGrid
-Add module sendgrid-mail to your dependsOn section in
- 
-oap-module.yaml.
+## OAP SendGrid Mail
+Add module to `oap-module.yaml`
 
-Enable sendgrid profile in profiles = [] section at
-the top of application.conf.
+    dependsOn:
+        - oap-mail-sendgrid
 
 Go to https://app.sendgrid.com/settings/api_keys and click
-"Create API key".
+`Create API key`.
 
-Place `oap-mail-smtp-transport.parameters.sendGridKey = [NEW KEY]`
-to the application.conf.
+Enable and configure SendGrid in `application.conf`
+
+    profiles = [
+        oap-mail-sendgrid
+    ]
+ 
+    oap-mail-smtp-transport.parameters.sendGridKey = [NEW KEY]
+    oap-mail-queue.paramaters.transport = "@service:oap-mail-sendgrid-trasport"
 

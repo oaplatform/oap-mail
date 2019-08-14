@@ -4,6 +4,7 @@ services:
     implementation: oap.mail.PasswordAuthenticator
 
   oap-mail-smtp-transport:
+    profile: oap-mail-javamail
     implementation: oap.mail.SmtpTransport
     parameters:
       authenticator: "@service:oap-mail-password-authenticator"
