@@ -26,8 +26,6 @@ package oap.mail;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -41,14 +39,9 @@ public class PasswordAuthenticator extends Authenticator {
     }
 
     public PasswordAuthenticator( URL config ) {
-        try( InputStream stream = config.openStream() ) {
-            Properties properties = new Properties();
-            properties.load( stream );
-            this.username = properties.getProperty( "username" );
-            this.password = properties.getProperty( "password" );
-        } catch( IOException e ) {
-            throw new IllegalArgumentException( e );
-        }
+        Properties properties = oap.util.Properties.read( config );
+        this.username = properties.getProperty( "username" );
+        this.password = properties.getProperty( "password" );
     }
 
     @Override
