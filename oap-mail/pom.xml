@@ -43,11 +43,6 @@
             <version>${oap.version}</version>
         </dependency>
         <dependency>
-            <groupId>oap</groupId>
-            <artifactId>oap-json</artifactId>
-            <version>${oap.version}</version>
-        </dependency>
-        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
