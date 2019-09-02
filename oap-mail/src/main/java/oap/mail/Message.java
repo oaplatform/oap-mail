@@ -24,10 +24,7 @@
 package oap.mail;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.ToString;
-import oap.util.Id;
 
 import java.util.ArrayList;
 import java.util.List;

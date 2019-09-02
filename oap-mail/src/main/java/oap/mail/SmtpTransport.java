@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) Open Application Platform Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package oap.mail;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +45,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class SmtpTransport {
+public class SmtpTransport implements oap.mail.Transport {
     public final String host;
     public final int port;
     public final boolean tls;
@@ -90,7 +114,7 @@ public class SmtpTransport {
                         if( attachment.getFile() == null )
                             part.setContent( attachment.getContent(), Attachments.makeMimeType( attachment ) );
                         else {
-                            if (attachment.getFile().startsWith( "http" )) {
+                            if( attachment.getFile().startsWith( "http" ) ) {
                                 part.setDataHandler( new DataHandler( new Attachments.MimeURLDataSource( attachment ) ) );
                             } else {
                                 part.setDataHandler( new DataHandler( new Attachments.MimeFileDataSource( attachment ) ) );
@@ -103,7 +127,7 @@ public class SmtpTransport {
                             part.setHeader( "Content-ID", cid );
                         }
                         multipart.addBodyPart( part );
-                    } catch( MalformedURLException e) {
+                    } catch( MalformedURLException e ) {
                         log.warn( "unable to attach file to email from URL {" + attachment.getFile() + "}", e );
                     }
                 }

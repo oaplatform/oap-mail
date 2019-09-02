@@ -1,7 +1,8 @@
 package oap.mail;
 
-import oap.testng.AbstractTest;
 import oap.testng.Env;
+import oap.testng.Fixtures;
+import oap.testng.TestDirectory;
 import oap.util.Lists;
 import org.testng.annotations.Test;
 
@@ -9,7 +10,11 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MailQueueTest extends AbstractTest {
+public class MailQueueTest extends Fixtures {
+    {
+        fixture( TestDirectory.FIXTURE );
+    }
+
     @Test
     public void persist() {
         var location = Env.tmpPath( "queue" );

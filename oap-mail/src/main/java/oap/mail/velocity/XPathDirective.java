@@ -24,7 +24,6 @@
 package oap.mail.velocity;
 
 import lombok.extern.slf4j.Slf4j;
-import oap.util.Lists;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
@@ -49,7 +48,7 @@ import static org.w3c.dom.Node.TEXT_NODE;
 @Slf4j
 public class XPathDirective extends Directive {
 
-    private static List<Short> TEXT_NODES = Lists.of( TEXT_NODE, ATTRIBUTE_NODE, COMMENT_NODE, CDATA_SECTION_NODE, PROCESSING_INSTRUCTION_NODE );
+    private static List<Short> TEXT_NODES = List.of( TEXT_NODE, ATTRIBUTE_NODE, COMMENT_NODE, CDATA_SECTION_NODE, PROCESSING_INSTRUCTION_NODE );
 
     public String getName() {
         return "xpath";
