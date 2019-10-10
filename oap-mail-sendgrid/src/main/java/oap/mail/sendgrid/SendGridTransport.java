@@ -38,6 +38,7 @@ import oap.mail.Transport;
 import javax.mail.Part;
 import java.util.Arrays;
 
+@SuppressWarnings( "unused" )
 @Slf4j
 public class SendGridTransport implements Transport {
     private final String sendGridKey;
