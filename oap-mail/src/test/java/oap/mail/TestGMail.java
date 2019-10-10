@@ -34,14 +34,13 @@ public class TestGMail {
      * password=whatever
      *
      */
-    @SuppressWarnings( "OptionalGetWithoutIsPresent" )
     public static void main( String[] args ) throws MailException {
         Resources.readProperties( TestGMail.class, "/gmailauth.conf" );
         Resources.url( TestGMail.class, "/gmailauth.conf" ).ifPresentOrElse( auth -> {
             PasswordAuthenticator authenticator = new PasswordAuthenticator( auth );
             SmtpTransport transport = new SmtpTransport( "smtp.gmail.com", 587, true, authenticator );
             Mailman mailman = new Mailman( transport, new MailQueue() );
-            Template template = Template.of( "/xjapanese" ).get();
+            Template template = Template.of( "/xjapanese" ).orElseThrow();
             template.bind( "logo",
                 "https://assets.coingecko.com/coins/images/4552/small/0xcert.png?1547039841" );
             Message message = template.buildMessage();
