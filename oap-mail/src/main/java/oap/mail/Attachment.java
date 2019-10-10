@@ -45,7 +45,9 @@ public class Attachment {
 
     @JsonCreator
     public Attachment( String contentType, String content, String contentId, String file, String name ) {
-        checkArgument( contentType.startsWith( "text/" ) || file != null, "contentType.startsWith( text/ ) || file != null" );
+        checkArgument( contentType.startsWith( "text/" )
+            || contentType.startsWith( "img/" ) || file != null,
+            "contentType.startsWith( text/ ) || contentType.startsWith( img/ ) || file != null" );
         this.contentType = contentType;
         this.content = content;
         this.contentId = contentId;
