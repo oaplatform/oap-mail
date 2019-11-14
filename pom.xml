@@ -54,15 +54,15 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
 
-        <revision>2.3.5</revision>
+        <revision>3.0.0</revision>
 
         <sendgrid.version>4.4.1</sendgrid.version>
-        <oap.version>5.1.4</oap.version>
+        <oap.version>6.0.0</oap.version>
         <jackson.version>2.9.8</jackson.version>
-        <lombok.version>1.18.8</lombok.version>
+        <lombok.version>1.18.10</lombok.version>
     </properties>
 
     <dependencies>
