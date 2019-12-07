@@ -58,7 +58,7 @@ public class MailQueue {
     }
 
     public void processing( Predicate<Message> processor ) {
-        queue.removeIf( processor::test );
+        queue.removeIf( processor );
         persist();
     }
 

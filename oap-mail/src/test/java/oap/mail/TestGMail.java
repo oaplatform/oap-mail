@@ -35,7 +35,6 @@ public class TestGMail {
      *
      */
     public static void main( String[] args ) throws MailException {
-        Resources.readProperties( TestGMail.class, "/gmailauth.conf" );
         Resources.url( TestGMail.class, "/gmailauth.conf" ).ifPresentOrElse( auth -> {
             PasswordAuthenticator authenticator = new PasswordAuthenticator( auth );
             SmtpTransport transport = new SmtpTransport( "smtp.gmail.com", 587, true, authenticator );

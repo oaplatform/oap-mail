@@ -61,11 +61,11 @@
         <maven.compiler.source>13</maven.compiler.source>
         <maven.compiler.target>13</maven.compiler.target>
 
-        <revision>3.0.2</revision>
+        <revision>3.0.3</revision>
 
         <sendgrid.version>4.4.1</sendgrid.version>
         <oap.version>6.1.0</oap.version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.10.1</jackson.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
     </properties>
 

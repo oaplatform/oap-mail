@@ -25,6 +25,7 @@
 package oap.mail;
 
 import lombok.extern.slf4j.Slf4j;
+import oap.io.Resources;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.QCodec;
 
@@ -111,6 +112,19 @@ public class Attachments {
 
         MimeURLDataSource( Attachment attachment ) throws MessagingException, MalformedURLException {
             super( new URL( attachment.getFile() ) );
+            mimeType = makeMimeType( attachment );
+        }
+
+        public String getContentType() {
+            return mimeType != null ? mimeType : super.getContentType();
+        }
+    }
+
+    static class ClasspathDataSource extends URLDataSource {
+        String mimeType;
+
+        ClasspathDataSource( Attachment attachment ) throws MessagingException {
+            super( Resources.url( ClasspathDataSource.class, attachment.getFile().substring( "classpath://".length() ) ).orElseThrow() );
             mimeType = makeMimeType( attachment );
         }
 

@@ -113,13 +113,11 @@ public class SmtpTransport implements oap.mail.Transport {
                         part = new MimeBodyPart();
                         if( attachment.getFile() == null )
                             part.setContent( attachment.getContent(), Attachments.makeMimeType( attachment ) );
-                        else {
-                            if( attachment.getFile().startsWith( "http" ) ) {
-                                part.setDataHandler( new DataHandler( new Attachments.MimeURLDataSource( attachment ) ) );
-                            } else {
-                                part.setDataHandler( new DataHandler( new Attachments.MimeFileDataSource( attachment ) ) );
-                            }
-                        }
+                        else if( attachment.getFile().startsWith( "classpath" ) )
+                            part.setDataHandler( new DataHandler( new Attachments.ClasspathDataSource( attachment ) ) );
+                        else if( attachment.getFile().startsWith( "http" ) )
+                            part.setDataHandler( new DataHandler( new Attachments.MimeURLDataSource( attachment ) ) );
+                        else part.setDataHandler( new DataHandler( new Attachments.MimeFileDataSource( attachment ) ) );
                         String cid = attachment.getContentId();
                         if( cid != null ) {
                             if( cidIds.contains( cid ) )
