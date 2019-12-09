@@ -3,9 +3,17 @@ services:
   oap-mail-password-authenticator:
     implementation: oap.mail.PasswordAuthenticator
 
-  oap-mail-smtp-transport:
+  oap-mail-transport-smtp:
     profile: oap-mail-javamail
+    name: oap-mail-transport
     implementation: oap.mail.SmtpTransport
+    parameters:
+      authenticator: "@service:oap-mail-password-authenticator"
+
+  oap-mail-transport-mock:
+    profile: -oap-mail-javamail
+    name: oap-mail-transport
+    implementation: oap.mail.TransportMock
     parameters:
       authenticator: "@service:oap-mail-password-authenticator"
 
@@ -15,7 +23,7 @@ services:
   oap-mail-mailman:
     implementation: oap.mail.Mailman
     parameters:
-      transport: "@service:oap-mail-smtp-transport"
+      transport: "@service:oap-mail-transport"
       queue: "@service:oap-mail-queue"
     supervision:
       schedule: true
