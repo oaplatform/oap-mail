@@ -28,10 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Mailman implements Runnable {
-    private SmtpTransport transport;
+    private Transport transport;
     private MailQueue queue;
 
-    public Mailman( SmtpTransport transport, MailQueue queue ) {
+    public Mailman( Transport transport, MailQueue queue ) {
         this.transport = transport;
         this.queue = queue;
     }
