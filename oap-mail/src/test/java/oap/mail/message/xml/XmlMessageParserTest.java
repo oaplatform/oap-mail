@@ -35,18 +35,18 @@ public class XmlMessageParserTest {
     @Test
     public void parse() {
         Message message = new XmlMessageParser().parse( contentOfTestResource( getClass(), "simple.xmail" ) );
-        assertEquals( "subject", message.getSubject() );
-        assertEquals( "body", message.getBody() );
-        assertEquals( "text/plain", message.getContentType() );
+        assertEquals( "subject", message.subject );
+        assertEquals( "body", message.body );
+        assertEquals( "text/plain", message.contentType );
     }
 
     @Test
     public void attachment() {
         Message message = new XmlMessageParser().parse( contentOfTestResource( getClass(), "text-attachment.xmail" ) );
-        assertEquals( "subject", message.getSubject() );
-        assertEquals( "body", message.getBody() );
-        assertEquals( 1, message.getAttachments().size() );
-        Attachment attachment = message.getAttachments().get( 0 );
+        assertEquals( "subject", message.subject );
+        assertEquals( "body", message.body );
+        assertEquals( 1, message.attachments.size() );
+        Attachment attachment = message.attachments.get( 0 );
         assertEquals( "text/plain", attachment.getContentType() );
         assertEquals( "this is text attachment", attachment.getContent() );
     }

@@ -29,10 +29,9 @@ public class TestGMail {
 
     /**
      * put gmailauth.conf in test/resources. Dont worry it's in .gitignore:
-     *
+     * <p>
      * username=aaa@gmail.com
      * password=whatever
-     *
      */
     public static void main( String[] args ) throws MailException {
         Resources.url( TestGMail.class, "/gmailauth.conf" ).ifPresentOrElse( auth -> {
@@ -43,8 +42,8 @@ public class TestGMail {
             template.bind( "logo",
                 "https://assets.coingecko.com/coins/images/4552/small/0xcert.png?1547039841" );
             Message message = template.buildMessage();
-            message.setFrom( MailAddress.of( "Україна", "vladimir.kirichenko@gmail.com" ) );
-            message.setTo( MailAddress.of( "Little Green Mail", "vk@xenoss.io" ) );
+            message.from = MailAddress.of( "Україна", "vladimir.kirichenko@gmail.com" );
+            message.to.add( MailAddress.of( "Little Green Mail", "vk@xenoss.io" ) );
             mailman.send( message );
             mailman.run();
         }, () -> {

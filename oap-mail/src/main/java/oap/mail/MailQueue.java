@@ -26,6 +26,7 @@ package oap.mail;
 
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tags;
+import lombok.extern.slf4j.Slf4j;
 import oap.json.Binder;
 import oap.reflect.TypeRef;
 import oap.util.Lists;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Predicate;
 
+@Slf4j
 public class MailQueue {
     private final ConcurrentLinkedQueue<Message> queue = new ConcurrentLinkedQueue<>();
     private Path location;
@@ -43,8 +45,8 @@ public class MailQueue {
     public MailQueue( Path location ) {
         if( location != null ) {
             this.location = location.resolve( "mail.gz" );
+            load();
         }
-        load();
 
         Metrics.gaugeCollectionSize( "mail_queue", Tags.empty(), queue );
     }
@@ -67,10 +69,16 @@ public class MailQueue {
     }
 
     private void load() {
+        log.debug( "loading queue..." );
         queue.addAll( Binder.json.unmarshal( new TypeRef<List<Message>>() {}, location ).orElse( Lists.empty() ) );
+        log.debug( "{} messages loaded", size() );
     }
 
     public List<Message> messages() {
         return Stream.of( queue.stream() ).toList();
+    }
+
+    public int size() {
+        return queue.size();
     }
 }

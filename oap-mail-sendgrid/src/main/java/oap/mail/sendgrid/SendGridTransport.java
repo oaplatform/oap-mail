@@ -32,11 +32,11 @@ import com.sendgrid.helpers.mail.objects.Attachments;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import lombok.extern.slf4j.Slf4j;
+import oap.mail.MailAddress;
 import oap.mail.Message;
 import oap.mail.Transport;
 
 import javax.mail.Part;
-import java.util.Arrays;
 
 @SuppressWarnings( "unused" )
 @Slf4j
@@ -49,25 +49,26 @@ public class SendGridTransport implements Transport {
 
     @Override
     public void send( Message message ) {
-        Email from = new Email( message.getFrom().toString() );
-        Content content = new Content( "text/html", message.getBody() );
+        Email from = new Email( message.from.toString() );
+        Content content = new Content( "text/html", message.body );
         SendGrid sendGrid = new SendGrid( sendGridKey );
         Request request = new Request();
         request.setMethod( Method.POST );
         request.setEndpoint( "mail/send" );
-        Arrays.stream( message.getTo() )
-            .forEach( address -> {
-                Email to = new Email( address.toString() );
-                Mail mail = new Mail( from, message.getSubject(), to, content );
-                message.getAttachments().stream().map( this::createAttachments )
-                    .forEach( mail::addAttachments );
-                try {
-                    request.setBody( mail.build() );
-                    sendGrid.api( request );
-                } catch( Exception e ) {
-                    log.error( String.format( "failed to send '%s'", message.getSubject() ), e );
-                }
-            } );
+        for( MailAddress address : message.to ) {
+            Email to = new Email( address.toString() );
+            Mail mail = new Mail( from, message.subject, to, content );
+            message.attachments.stream()
+                .map( this::createAttachments )
+                .forEach( mail::addAttachments );
+            try {
+                request.setBody( mail.build() );
+                sendGrid.api( request );
+            } catch( Exception e ) {
+                log.error( "failed to send {}", message );
+                log.error( e.getMessage(), e );
+            }
+        }
     }
 
     private Attachments createAttachments( oap.mail.Attachment oapAttachment ) {

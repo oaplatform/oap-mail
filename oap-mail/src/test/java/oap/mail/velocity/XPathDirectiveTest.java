@@ -45,7 +45,7 @@ public class XPathDirectiveTest {
             .parse( pathOfTestResource( getClass(), "test.xml" ).toFile() );
         template.bind( "doc", document );
         Message message = template.buildMessage();
-        assertEquals( "value", message.getBody() );
+        assertEquals( "value", message.body );
     }
 
 

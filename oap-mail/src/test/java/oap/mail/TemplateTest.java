@@ -38,8 +38,8 @@ public class TemplateTest {
         template.bind( "subj", "subject" );
         template.bind( "body", "content" );
         Message message = template.buildMessage();
-        assertEquals( "subject is evaluated", message.getSubject() );
-        assertEquals( "some content variable", message.getBody() );
+        assertEquals( "subject is evaluated", message.subject );
+        assertEquals( "some content variable", message.body );
     }
 
     @Test
@@ -48,8 +48,8 @@ public class TemplateTest {
         template.bind( "subj", "subject" );
         template.bind( "body", "cont ent" );
         Message message = template.buildMessage();
-        assertEquals( "subject is evaluated", message.getSubject() );
-        assertEquals( "some cont%20ent variable", message.getBody() );
+        assertEquals( "subject is evaluated", message.subject );
+        assertEquals( "some cont%20ent variable", message.body );
     }
 
     @Test
@@ -57,7 +57,7 @@ public class TemplateTest {
         Template template = new Template( TEXT, "--subject--\nsubj\n--body--\n${bean.pub}" );
         template.bind( "bean", new Bean() );
         Message message = template.buildMessage();
-        assertEquals( "pub", message.getBody() );
+        assertEquals( "pub", message.body );
     }
 
     public static class Bean {

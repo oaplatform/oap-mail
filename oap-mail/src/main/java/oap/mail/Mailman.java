@@ -37,6 +37,7 @@ public class Mailman implements Runnable {
     }
 
     public void run() {
+        log.debug( "sending message queue, {} message(s)", queue.size() );
         queue.processing( message -> {
             try {
                 transport.send( message );
@@ -49,6 +50,7 @@ public class Mailman implements Runnable {
     }
 
     public void send( Message message ) {
+        log.debug( "enqueue message {}", message );
         queue.add( message );
     }
 

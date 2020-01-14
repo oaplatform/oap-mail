@@ -76,27 +76,28 @@ public class SmtpTransport implements oap.mail.Transport {
     }
 
     public void send( Message message ) {
+        log.debug( "sending {}", message );
         Session session = Session.getInstance( properties, authenticator );
         MimeMessage mimeMessage = new MimeMessage( session );
         try {
-            mimeMessage.setFrom( message.getFrom().toInternetAddress() );
-            for( MailAddress recipient : message.getTo() )
+            mimeMessage.setFrom( message.from.toInternetAddress() );
+            for( MailAddress recipient : message.to )
                 mimeMessage.addRecipient( javax.mail.Message.RecipientType.TO, recipient.toInternetAddress() );
-            for( MailAddress recipient : message.getCc() )
+            for( MailAddress recipient : message.cc )
                 mimeMessage.addRecipient( javax.mail.Message.RecipientType.CC, recipient.toInternetAddress() );
-            for( MailAddress recipient : message.getBcc() )
+            for( MailAddress recipient : message.bcc )
                 mimeMessage.addRecipient( javax.mail.Message.RecipientType.BCC, recipient.toInternetAddress() );
-            mimeMessage.setSubject( Strings.toQuotedPrintable( message.getSubject() ) );
+            mimeMessage.setSubject( Strings.toQuotedPrintable( message.subject ) );
             mimeMessage.setHeader( "Content-Transfer-Encoding", "quoted-printable" );
-            if( message.getAttachments().isEmpty() ) {
-                mimeMessage.setContent( message.getBody(), message.getContentType() + "; charset=UTF-8" );
+            if( message.attachments.isEmpty() ) {
+                mimeMessage.setContent( message.body, message.contentType + "; charset=UTF-8" );
             } else {
                 HashSet<String> cidIds = new HashSet<>();
                 MimeMultipart multipart;
-                if( "text/html".equalsIgnoreCase( message.getContentType() ) ) {
+                if( "text/html".equalsIgnoreCase( message.contentType ) ) {
                     multipart = new Attachments.HtmlMimeMultipart();
                     try {
-                        Matcher m = Pattern.compile( "[\"']cid:(.+)[\"']" ).matcher( message.getBody() );
+                        Matcher m = Pattern.compile( "[\"']cid:(.+)[\"']" ).matcher( message.body );
                         while( m.find() )
                             cidIds.add( m.group( 1 ) );
                     } catch( Exception e ) {
@@ -106,9 +107,9 @@ public class SmtpTransport implements oap.mail.Transport {
                     multipart = new MimeMultipart();
                 }
                 MimeBodyPart part = new MimeBodyPart();
-                part.setContent( message.getBody(), message.getContentType() + "; charset=UTF-8" );
+                part.setContent( message.body, message.contentType + "; charset=UTF-8" );
                 multipart.addBodyPart( part );
-                for( Attachment attachment : message.getAttachments() ) {
+                for( Attachment attachment : message.attachments ) {
                     try {
                         part = new MimeBodyPart();
                         if( attachment.getFile() == null )
@@ -132,8 +133,7 @@ public class SmtpTransport implements oap.mail.Transport {
                 mimeMessage.setContent( multipart );
             }
             Transport.send( mimeMessage );
-            log.debug( "message sent to " + Arrays.asList( message.getTo() ) + ( message.getBcc().length > 0
-                ? ", bcc to " + Arrays.asList( message.getBcc() ) : "" ) );
+            log.debug( "sent {}", message );
         } catch( MessagingException e ) {
             throw new MailException( e );
         }

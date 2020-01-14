@@ -34,25 +34,25 @@ public class TextMessageParserTest {
     @Test
     public void subject() {
         Message message = new TextMessageParser().parse( contentOfTestResource( getClass(), "subject.mail" ) );
-        assertEquals( "Subject", message.getSubject() );
-        assertEquals( "Body", message.getBody() );
+        assertEquals( "Subject", message.subject );
+        assertEquals( "Body", message.body );
     }
 
     @Test
     public void attachment() {
         Message message = new TextMessageParser().parse( contentOfTestResource( getClass(), "att1.mail" ) );
-        assertEquals( "Subject", message.getSubject() );
-        assertEquals( "Body", message.getBody() );
-        assertEquals( "Attachment1", message.getAttachments().get( 0 ).getContent() );
+        assertEquals( "Subject", message.subject );
+        assertEquals( "Body", message.body );
+        assertEquals( "Attachment1", message.attachments.get( 0 ).getContent() );
     }
 
     @Test
     public void multiAttachment() {
         Message message = new TextMessageParser().parse( contentOfTestResource( getClass(), "att2.mail" ) );
-        assertEquals( "Subject", message.getSubject() );
-        assertEquals( "Body", message.getBody() );
-        assertEquals( "Attachment1", message.getAttachments().get( 0 ).getContent() );
-        assertEquals( "Attachment2", message.getAttachments().get( 1 ).getContent() );
-        assertEquals( "Att\nachm\nent3", message.getAttachments().get( 2 ).getContent() );
+        assertEquals( "Subject", message.subject );
+        assertEquals( "Body", message.body );
+        assertEquals( "Attachment1", message.attachments.get( 0 ).getContent() );
+        assertEquals( "Attachment2", message.attachments.get( 1 ).getContent() );
+        assertEquals( "Att\nachm\nent3", message.attachments.get( 2 ).getContent() );
     }
 }

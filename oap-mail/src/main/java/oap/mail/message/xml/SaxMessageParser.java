@@ -47,7 +47,7 @@ public class SaxMessageParser extends DefaultHandler {
 
     public void startElement( String uri, String localName, String qName, Attributes attributes ) {
         characters = "";
-        if( "body".equals( qName ) ) message.setContentType( attributes.getValue( "type" ) );
+        if( "body".equals( qName ) ) message.contentType = attributes.getValue( "type" );
         if( "attachment".equals( qName ) ) {
             attachment = new Attachment( attributes.getValue( "type" ), null,
                 attributes.getValue( "content-id" ), attributes.getValue( "file" ),
@@ -56,16 +56,16 @@ public class SaxMessageParser extends DefaultHandler {
     }
 
     public void endElement( String uri, String localName, String qName ) {
-        if( "subject".equals( qName ) ) message.setSubject( characters );
-        if( "body".equals( qName ) ) message.setBody( characters );
+        if( "subject".equals( qName ) ) message.subject = characters;
+        if( "body".equals( qName ) ) message.body = characters;
         if( "attachment".equals( qName ) ) {
             if( attachment.getFile() == null )
                 attachment.setContent( characters );
-            message.addAttachment( attachment );
+            message.attachments.add( attachment );
         }
     }
 
-    public void warning( SAXParseException e ) throws SAXException {
+    public void warning( SAXParseException e ) {
         log.warn( e.toString() );
     }
 
