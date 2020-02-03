@@ -41,6 +41,7 @@ public class VelocityTemplateTransformer {
     public VelocityTemplateTransformer() {
         try {
             engine.addProperty( "userdirective", XPathDirective.class.getName() );
+            engine.addProperty( "userdirective", FormatDateDirective.class.getName() );
             engine.addProperty( "runtime.introspector.uberspect", Uberspector.class.getName() );
             engine.init();
         } catch( Exception e ) {

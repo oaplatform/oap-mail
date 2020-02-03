@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import static oap.mail.Template.Type.TEXT;
+import static oap.testng.Asserts.assertString;
 import static oap.testng.Asserts.pathOfTestResource;
 import static org.testng.Assert.assertEquals;
 
@@ -45,7 +46,7 @@ public class XPathDirectiveTest {
             .parse( pathOfTestResource( getClass(), "test.xml" ).toFile() );
         template.bind( "doc", document );
         Message message = template.buildMessage();
-        assertEquals( "value", message.body );
+        assertString( message.body ).isEqualTo( "value" );
     }
 
 
