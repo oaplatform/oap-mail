@@ -28,20 +28,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>oap</groupId>
+        <artifactId>oap.maven</artifactId>
+        <version>1.0.8</version>
+    </parent>
+
     <name>oap-mail-parent</name>
     <artifactId>oap-mail-parent</artifactId>
-    <groupId>oap</groupId>
-    <version>${revision}</version>
+    <version>${oap.project.version}</version>
     <packaging>pom</packaging>
 
     <repositories>
         <repository>
             <id>oap</id>
             <url>https://mvn.oaplatform.org</url>
-        </repository>
-        <repository>
-            <id>projectlombok.org</id>
-            <url>https://projectlombok.org/edge-releases</url>
         </repository>
     </repositories>
 
@@ -58,100 +60,15 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>13</maven.compiler.source>
-        <maven.compiler.target>13</maven.compiler.target>
+        <oap.project.version>3.1.0</oap.project.version>
 
-        <revision>3.0.8</revision>
-
-        <sendgrid.version>4.4.1</sendgrid.version>
-        <oap.version>6.4.11</oap.version>
-        <jackson.version>2.10.1</jackson.version>
-        <lombok.version>edge-SNAPSHOT</lombok.version>
+        <oap.deps.sendgrid.version>4.4.1</oap.deps.sendgrid.version>
+        <oap.deps.oap.version>6.7.5</oap.deps.oap.version>
+        <oap.deps.jackson.version>2.10.3</oap.deps.jackson.version>
+        <oap.deps.lombok.version>1.18.12</oap.deps.lombok.version>
+        <oap.deps.apache.codec.version>1.11</oap.deps.apache.codec.version>
+        <oap.deps.javax.activation.version>1.1.1</oap.deps.javax.activation.version>
+        <oap.deps.javax.mail.version>1.4.7</oap.deps.javax.mail.version>
+        <oap.deps.apache.velocity.version>1.7</oap.deps.apache.velocity.version>
     </properties>
-
-    <dependencies>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <useIncrementalCompilation>true</useIncrementalCompilation>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                        <arg>-Xlint:unchecked</arg>
-                        <arg>-Xlint:preview</arg>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version>
-                <configuration>
-                    <argLine>
-                        -ea
-                        -Dlogback.configurationFile=${session.executionRootDirectory}/oap-stdlib/src/test/resources/logback-test.xml
-                    </argLine>
-                    <trimStackTrace>false</trimStackTrace>
-                    <testFailureIgnore>true</testFailureIgnore>
-                    <useFile>true</useFile>
-                    <disableXmlReport>false</disableXmlReport>
-                    <printSummary>true</printSummary>
-                    <forkedProcessTimeoutInSeconds>4800</forkedProcessTimeoutInSeconds>
-                    <!--<forkMode>once</forkMode>-->
-                    <useSystemClassLoader>false</useSystemClassLoader>
-                    <runOrder>balanced</runOrder>
-                    <includes>
-                        <include>**/*Test.*</include>
-                        <include>**/*TestCase.*</include>
-                        <include>**/*Suite.*</include>
-                    </includes>
-                    <excludedGroups>PERFORMANCE</excludedGroups>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.0.1</version>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.1.0</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>
