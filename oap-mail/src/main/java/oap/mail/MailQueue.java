@@ -40,13 +40,13 @@ import java.util.function.Predicate;
 @Slf4j
 public class MailQueue {
     private final ConcurrentLinkedQueue<Message> queue = new ConcurrentLinkedQueue<>();
-    private Path location;
+    private final Path location;
 
     public MailQueue( Path location ) {
         if( location != null ) {
             this.location = location.resolve( "mail.gz" );
             load();
-        }
+        } else this.location = null;
 
         Metrics.gaugeCollectionSize( "mail_queue", Tags.empty(), queue );
     }
@@ -56,6 +56,7 @@ public class MailQueue {
     }
 
     public void add( Message message ) {
+        log.debug( "adding {}", message );
         queue.add( message );
     }
 
