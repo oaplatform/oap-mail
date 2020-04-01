@@ -1,6 +1,7 @@
 package oap.mail.test;
 
 import oap.mail.Message;
+import org.assertj.core.api.AbstractAssert;
 
 import java.util.Map;
 
@@ -8,11 +9,9 @@ import static oap.testng.Asserts.assertString;
 import static oap.testng.Asserts.contentOfTestResource;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public final class MessageAssertion {
-    private final Message actual;
-
+public final class MessageAssertion extends AbstractAssert<MessageAssertion, Message> {
     private MessageAssertion( Message message ) {
-        this.actual = message;
+        super( message, MessageAssertion.class );
     }
 
     public static MessageAssertion assertMessage( Message message ) {
