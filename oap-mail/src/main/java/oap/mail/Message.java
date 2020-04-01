@@ -24,17 +24,14 @@
 package oap.mail;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
-
 public class Message {
     public String subject;
     public String body;
-    public List<Attachment> attachments = new ArrayList<Attachment>();
+    public List<Attachment> attachments = new ArrayList<>();
     public MailAddress from;
     public final List<MailAddress> to = new ArrayList<>();
     public final List<MailAddress> cc = new ArrayList<>();

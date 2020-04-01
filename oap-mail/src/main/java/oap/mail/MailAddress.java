@@ -24,14 +24,17 @@
 package oap.mail;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
 import javax.mail.internet.InternetAddress;
-import java.nio.charset.StandardCharsets;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+@EqualsAndHashCode
 public class MailAddress {
-    private final String personal;
-    private final String mail;
+    public final String personal;
+    public final String mail;
 
     public MailAddress( String mail ) {
         this( null, mail );
@@ -56,7 +59,7 @@ public class MailAddress {
     @SneakyThrows
     public InternetAddress toInternetAddress() {
         return personal == null ? new InternetAddress( mail )
-            : new InternetAddress( mail, personal, StandardCharsets.UTF_8.toString() );
+            : new InternetAddress( mail, personal, UTF_8.toString() );
     }
 
     public String toString() {

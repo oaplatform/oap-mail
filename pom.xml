@@ -32,12 +32,12 @@
     <parent>
         <groupId>oap</groupId>
         <artifactId>oap.maven</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9</version>
     </parent>
 
     <name>oap-mail-parent</name>
     <artifactId>oap-mail-parent</artifactId>
-    <version>${oap.project.version}</version>
+    <version>${oap.mail.project.version}</version>
     <packaging>pom</packaging>
 
     <repositories>
@@ -47,20 +47,13 @@
         </repository>
     </repositories>
 
-    <distributionManagement>
-        <repository>
-            <id>oap</id>
-            <url>https://mvn.oaplatform.org/</url>
-        </repository>
-    </distributionManagement>
-
     <modules>
         <module>oap-mail</module>
         <module>oap-mail-sendgrid</module>
     </modules>
 
     <properties>
-        <oap.project.version>3.1.1</oap.project.version>
+        <oap.mail.project.version>3.1.2</oap.mail.project.version>
 
         <oap.deps.sendgrid.version>4.4.1</oap.deps.sendgrid.version>
         <oap.deps.oap.version>6.7.9</oap.deps.oap.version>
