@@ -34,7 +34,7 @@ public class TestGMail {
      * password=whatever
      */
     public static void main( String[] args ) throws MailException {
-        Resources.url( TestGMail.class, "/gmailauth.conf" ).ifPresentOrElse( auth -> {
+        Resources.filePath( TestGMail.class, "/gmailauth.conf" ).ifPresentOrElse( auth -> {
             PasswordAuthenticator authenticator = new PasswordAuthenticator( auth );
             SmtpTransport transport = new SmtpTransport( "smtp.gmail.com", 587, true, authenticator );
             Mailman mailman = new Mailman( transport, new MailQueue() );

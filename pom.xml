@@ -53,10 +53,10 @@
     </modules>
 
     <properties>
-        <oap.mail.project.version>3.1.5</oap.mail.project.version>
+        <oap.mail.project.version>3.1.6</oap.mail.project.version>
 
         <oap.deps.sendgrid.version>4.4.1</oap.deps.sendgrid.version>
-        <oap.deps.oap.version>6.7.9</oap.deps.oap.version>
+        <oap.deps.oap.version>6.8.9</oap.deps.oap.version>
         <oap.deps.jackson.version>2.10.3</oap.deps.jackson.version>
         <oap.deps.lombok.version>1.18.12</oap.deps.lombok.version>
         <oap.deps.apache.codec.version>1.11</oap.deps.apache.codec.version>
