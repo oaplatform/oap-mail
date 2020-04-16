@@ -29,8 +29,10 @@ import io.micrometer.core.instrument.Tags;
 import lombok.extern.slf4j.Slf4j;
 import oap.json.Binder;
 import oap.reflect.TypeRef;
+import oap.util.Dates;
 import oap.util.Lists;
 import oap.util.Stream;
+import org.joda.time.DateTime;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -41,6 +43,7 @@ import java.util.function.Predicate;
 public class MailQueue {
     private final ConcurrentLinkedQueue<Message> queue = new ConcurrentLinkedQueue<>();
     private final Path location;
+    public long brokenMessageTTL = Dates.w( 2 );
 
     public MailQueue( Path location ) {
         if( location != null ) {
@@ -61,7 +64,14 @@ public class MailQueue {
     }
 
     public void processing( Predicate<Message> processor ) {
-        queue.removeIf( processor );
+        DateTime ttl = DateTime.now().minus( brokenMessageTTL );
+        queue.removeIf( m -> {
+            if( processor.test( m ) ) return true;
+            else if( m.created.isBefore( ttl ) ) {
+                log.debug( "removing expired {}", m );
+                return true;
+            } else return false;
+        } );
         persist();
     }
 

@@ -24,10 +24,13 @@
 package oap.mail;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.ToString;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString( of = { "subject", "from", "to", "cc", "bcc", "created" } )
 public class Message {
     public String subject;
     public String body;
@@ -37,6 +40,7 @@ public class Message {
     public final List<MailAddress> cc = new ArrayList<>();
     public final List<MailAddress> bcc = new ArrayList<>();
     public String contentType = "text/plain";
+    public DateTime created = new DateTime();
 
     @JsonCreator
     public Message( String subject, String body, List<Attachment> attachments ) {
@@ -47,10 +51,5 @@ public class Message {
 
     public Message() {
         this( null, null, List.of() );
-    }
-
-    @Override
-    public String toString() {
-        return "Message from " + from + " to " + to + " cc " + cc + " bcc " + bcc + " with " + attachments.size() + " attachment(s)";
     }
 }

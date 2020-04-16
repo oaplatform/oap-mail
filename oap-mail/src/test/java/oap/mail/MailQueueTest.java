@@ -23,47 +23,58 @@
  */
 package oap.mail;
 
-import oap.testng.Env;
+import oap.mail.test.MessageAssertion;
 import oap.testng.Fixtures;
-import oap.testng.TestDirectory;
+import oap.testng.TestDirectoryFixture;
+import oap.util.Dates;
 import oap.util.Lists;
+import org.joda.time.DateTime;
 import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 
+import static oap.mail.test.MessagesAssertion.assertMessages;
+import static oap.testng.TestDirectoryFixture.testPath;
+import static oap.util.Functions.empty.accept;
+import static oap.util.Functions.empty.reject;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MailQueueTest extends Fixtures {
     {
-        fixture( TestDirectory.FIXTURE );
+        fixture( TestDirectoryFixture.FIXTURE );
     }
 
     @Test
     public void persist() {
-        var location = Env.tmpPath( "queue" );
+        var location = testPath( "queue" );
         MailQueue queue = prepareQueue( location );
-        queue.processing( m -> false );
+        queue.processing( reject() );
         assertThat( location.resolve( "mail.gz" ) ).exists();
         var queue2 = new MailQueue( location );
-        assertThat( queue2.messages() ).hasSize( 3 );
+        assertMessages( queue2.messages() )
+            .hasSize( 2 )
+            .bySubject( "subj1", MessageAssertion::assertMessage )
+            .bySubject( "subj2", MessageAssertion::assertMessage );
 
-        queue2.processing( m -> true );
-        assertThat( queue2.messages() ).isEmpty();
+        queue2.processing( accept() );
+        assertMessages( queue2.messages() ).isEmpty();
         var queue3 = new MailQueue( location );
-        assertThat( queue3.messages() ).isEmpty();
+        assertMessages( queue3.messages() ).isEmpty();
     }
 
     @Test
     public void persistWithNullLocation() {
         MailQueue queue = prepareQueue( null );
-        queue.processing( m -> false );
+        queue.processing( reject() );
     }
 
     private MailQueue prepareQueue( Path location ) {
         var queue = new MailQueue( location );
         queue.add( new Message( "subj1", "body", Lists.empty() ) );
         queue.add( new Message( "subj2", "body", Lists.empty() ) );
-        queue.add( new Message( "subj3", "body", Lists.empty() ) );
+        Message message = new Message( "subj3", "body", Lists.empty() );
+        message.created = DateTime.now().minus( Dates.w( 3 ) );
+        queue.add( message );
         return queue;
     }
 }
