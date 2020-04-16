@@ -28,7 +28,7 @@ package oap.mail;
 import org.testng.annotations.Test;
 
 import static oap.mail.Template.Type.TEXT;
-import static org.testng.Assert.assertEquals;
+import static oap.mail.test.MessageAssertion.assertMessage;
 
 public class TemplateTest {
 
@@ -37,9 +37,16 @@ public class TemplateTest {
         Template template = new Template( Template.Type.TEXT, "--subject--\n$subj is evaluated\n--body--\nsome $body variable" );
         template.bind( "subj", "subject" );
         template.bind( "body", "content" );
-        Message message = template.buildMessage();
-        assertEquals( "subject is evaluated", message.subject );
-        assertEquals( "some content variable", message.body );
+        assertMessage( template.buildMessage() )
+            .hasSubject( "subject is evaluated" )
+            .hasBody( "some content variable" );
+    }
+
+    @Test
+    public void include() {
+        Template template = new Template( Template.Type.TEXT, "--subject--\nsubject\n--body--\nsome #include(\"/oap/mail/TemplateTest/include.txt\")" );
+        assertMessage( template.buildMessage() )
+            .hasBody( "some included text" );
     }
 
     @Test
@@ -47,9 +54,9 @@ public class TemplateTest {
         Template template = new Template( Template.Type.TEXT, "--subject--\n$subj is evaluated\n--body--\nsome ${body.replaceAll(' ','%20')} variable" );
         template.bind( "subj", "subject" );
         template.bind( "body", "cont ent" );
-        Message message = template.buildMessage();
-        assertEquals( "subject is evaluated", message.subject );
-        assertEquals( "some cont%20ent variable", message.body );
+        assertMessage( template.buildMessage() )
+            .hasSubject( "subject is evaluated" )
+            .hasBody( "some cont%20ent variable" );
     }
 
     @Test
@@ -57,7 +64,8 @@ public class TemplateTest {
         Template template = new Template( TEXT, "--subject--\nsubj\n--body--\n${bean.pub}" );
         template.bind( "bean", new Bean() );
         Message message = template.buildMessage();
-        assertEquals( "pub", message.body );
+        assertMessage( message )
+            .hasBody( "pub" );
     }
 
     public static class Bean {

@@ -37,10 +37,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Template {
-    private Type type;
+    private final Type type;
     private final String content;
-    private Map<String, Object> parameters = new HashMap<>();
-    private static VelocityTemplateTransformer transformer = new VelocityTemplateTransformer();
+    private final Map<String, Object> parameters = new HashMap<>();
+    private static final VelocityTemplateTransformer transformer = new VelocityTemplateTransformer();
 
     public Template( Type type, String content ) {
         this.type = type;

@@ -42,3 +42,4 @@ target
 gmailauth.conf
 .flattened-pom.xml
 
+/.idea/jarRepositories.xml

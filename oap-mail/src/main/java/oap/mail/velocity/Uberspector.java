@@ -38,16 +38,12 @@ public class Uberspector extends UberspectImpl {
             getter.getMethodName();
             return getter;
         } catch( NullPointerException notfound ) {
-            final Field field = object.getClass().getField( name );
-            if( field != null ) {
-                AbstractExecutor executor = new AbstractExecutor() {
-                    public Object execute( Object o ) throws IllegalAccessException {
-                        return field.get( o );
-                    }
-                };
-                return new VelGetterImpl( executor );
-            }
+            Field field = object.getClass().getField( name );
+            return new VelGetterImpl( new AbstractExecutor() {
+                public Object execute( Object o ) throws IllegalAccessException {
+                    return field.get( o );
+                }
+            } );
         }
-        return null;
     }
 }
