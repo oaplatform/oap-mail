@@ -34,7 +34,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import static oap.mail.Template.Type.TEXT;
 import static oap.testng.Asserts.assertString;
 import static oap.testng.Asserts.pathOfTestResource;
-import static org.testng.Assert.assertEquals;
 
 public class XPathDirectiveTest {
 

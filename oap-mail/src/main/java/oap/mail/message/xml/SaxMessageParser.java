@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import oap.mail.Attachment;
 import oap.mail.Message;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 

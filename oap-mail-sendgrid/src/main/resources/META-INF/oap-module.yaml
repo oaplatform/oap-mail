@@ -3,5 +3,4 @@ dependsOn:
 name: oap-mail-sendgrid
 services:
   oap-mail-sendgrid-transport:
-    profile: oap-mail-sendgrid
     implementation: oap.mail.sendgrid.SendGridTransport

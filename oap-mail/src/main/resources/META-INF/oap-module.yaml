@@ -8,14 +8,14 @@ services:
     name: oap-mail-transport
     implementation: oap.mail.SmtpTransport
     parameters:
-      authenticator: "@service:oap-mail-password-authenticator"
+      authenticator: modules.this.oap-mail-password-authenticator
 
   oap-mail-transport-mock:
     profile: -oap-mail-javamail
     name: oap-mail-transport
     implementation: oap.mail.TransportMock
     parameters:
-      authenticator: "@service:oap-mail-password-authenticator"
+      authenticator: modules.this.oap-mail-password-authenticator
 
   oap-mail-queue:
     implementation: oap.mail.MailQueue
@@ -23,8 +23,8 @@ services:
   oap-mail-mailman:
     implementation: oap.mail.Mailman
     parameters:
-      transport: "@service:oap-mail-transport"
-      queue: "@service:oap-mail-queue"
+      transport: modules.this.oap-mail-transport
+      queue: modules.this.oap-mail-queue
     supervision:
       schedule: true
       delay: 1m

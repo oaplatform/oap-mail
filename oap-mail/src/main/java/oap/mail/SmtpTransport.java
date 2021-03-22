@@ -38,7 +38,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -46,6 +45,16 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class SmtpTransport implements oap.mail.Transport {
+    static {
+        MailcapCommandMap mc = ( MailcapCommandMap ) CommandMap.getDefaultCommandMap();
+        mc.addMailcap( "text/html;; x-java-content-handler=com.sun.mail.handlers.text_html" );
+        mc.addMailcap( "text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml" );
+        mc.addMailcap( "text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain" );
+        mc.addMailcap( "multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed" );
+        mc.addMailcap( "message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822" );
+        CommandMap.setDefaultCommandMap( mc );
+    }
+
     public final String host;
     public final int port;
     public final boolean tls;
@@ -63,16 +72,6 @@ public class SmtpTransport implements oap.mail.Transport {
         properties.put( "mail.smtp.auth", String.valueOf( authenticator != null ) );
 
 
-    }
-
-    static {
-        MailcapCommandMap mc = ( MailcapCommandMap ) CommandMap.getDefaultCommandMap();
-        mc.addMailcap( "text/html;; x-java-content-handler=com.sun.mail.handlers.text_html" );
-        mc.addMailcap( "text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml" );
-        mc.addMailcap( "text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain" );
-        mc.addMailcap( "multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed" );
-        mc.addMailcap( "message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822" );
-        CommandMap.setDefaultCommandMap( mc );
     }
 
     public void send( Message message ) {

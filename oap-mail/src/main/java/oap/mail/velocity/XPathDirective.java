@@ -47,8 +47,7 @@ import static org.w3c.dom.Node.TEXT_NODE;
 
 @Slf4j
 public class XPathDirective extends Directive {
-
-    private static List<Short> TEXT_NODES = List.of( TEXT_NODE, ATTRIBUTE_NODE, COMMENT_NODE, CDATA_SECTION_NODE, PROCESSING_INSTRUCTION_NODE );
+    private static final List<Short> TEXT_NODES = List.of( TEXT_NODE, ATTRIBUTE_NODE, COMMENT_NODE, CDATA_SECTION_NODE, PROCESSING_INSTRUCTION_NODE );
 
     public String getName() {
         return "xpath";
