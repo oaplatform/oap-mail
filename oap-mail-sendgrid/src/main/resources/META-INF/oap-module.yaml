@@ -1,6 +1,0 @@
-dependsOn:
-  - oap-mail
-name: oap-mail-sendgrid
-services:
-  oap-mail-sendgrid-transport:
-    implementation: oap.mail.sendgrid.SendGridTransport
