@@ -69,6 +69,9 @@ public class SmtpTransport implements oap.mail.Transport {
         properties.put( "mail.smtp.host", host );
         properties.put( "mail.smtp.port", String.valueOf( port ) );
         properties.put( "mail.smtp.starttls.enable", String.valueOf( tls ) );
+        if( tls ) {
+            properties.put( "mail.smtp.ssl.protocols", "TLSv1.3" );
+        }
         properties.put( "mail.smtp.auth", String.valueOf( authenticator != null ) );
 
 
