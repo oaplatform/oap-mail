@@ -53,7 +53,7 @@
     </modules>
 
     <properties>
-        <oap.mail.project.version>5.1.0</oap.mail.project.version>
+        <oap.mail.project.version>5.1.1</oap.mail.project.version>
 
         <oap.deps.sendgrid.version>4.4.1</oap.deps.sendgrid.version>
         <oap.deps.oap.version>9.15.6</oap.deps.oap.version>
