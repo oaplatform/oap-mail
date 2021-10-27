@@ -32,7 +32,7 @@
     <parent>
         <groupId>oap</groupId>
         <artifactId>oap.maven</artifactId>
-        <version>2.0.7</version>
+        <version>17.3.0.8</version>
     </parent>
 
     <name>oap-mail-parent</name>
@@ -53,10 +53,10 @@
     </modules>
 
     <properties>
-        <oap.mail.project.version>5.1.2</oap.mail.project.version>
+        <oap.mail.project.version>17.5.1.2</oap.mail.project.version>
 
         <oap.deps.sendgrid.version>4.4.1</oap.deps.sendgrid.version>
-        <oap.deps.oap.version>9.15.6</oap.deps.oap.version>
+        <oap.deps.oap.version>17.9.18.3</oap.deps.oap.version>
         <oap.deps.jackson.version>2.12.1</oap.deps.jackson.version>
         <oap.deps.lombok.version>1.18.20</oap.deps.lombok.version>
         <oap.deps.apache.codec.version>1.11</oap.deps.apache.codec.version>
