@@ -25,6 +25,8 @@ package oap.mail;
 
 import oap.io.Resources;
 
+import static oap.mail.test.MessageAssertion.assertThatInboxHasMessage;
+
 public class TestGMail {
 
     /**
@@ -42,10 +44,13 @@ public class TestGMail {
             template.bind( "logo",
                 "https://assets.coingecko.com/coins/images/4552/small/0xcert.png?1547039841" );
             Message message = template.buildMessage();
-            message.from = MailAddress.of( "Україна", "vladimir.kirichenko@gmail.com" );
-            message.to.add( MailAddress.of( "Little Green Mail", "vk@xenoss.io" ) );
+            message.from = MailAddress.of( "Україна", "ihor.lytvyn@xenoss.io" );
+            message.to.add( MailAddress.of( "Little Green Mail", "ihor.lytvyn@xenoss.io" ) );
             mailman.send( message );
             mailman.run();
+
+            assertThatInboxHasMessage( authenticator.username, authenticator.password )
+                .hasSubject( "[japanese xtest] サーバの接続が切断されました" );
         }, () -> {
             throw new RuntimeException( "see javadoc!" );
         } );

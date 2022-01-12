@@ -63,5 +63,6 @@
         <oap.deps.javax.activation.version>1.1.1</oap.deps.javax.activation.version>
         <oap.deps.javax.mail.version>1.4.7</oap.deps.javax.mail.version>
         <oap.deps.apache.velocity.version>1.7</oap.deps.apache.velocity.version>
+        <javax.mail>1.6.2</javax.mail>
     </properties>
 </project>

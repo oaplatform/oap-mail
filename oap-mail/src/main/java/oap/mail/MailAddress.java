@@ -28,6 +28,8 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
 import javax.mail.internet.InternetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -49,6 +51,20 @@ public class MailAddress {
     public static MailAddress[] of( String... mails ) {
         MailAddress[] result = new MailAddress[mails.length];
         for( int i = 0; i < mails.length; i++ ) result[i] = new MailAddress( mails[i] );
+        return result;
+    }
+
+    public static MailAddress of( InternetAddress address ) {
+        return new MailAddress( address.getPersonal(), address.getAddress() );
+    }
+
+    public static List<MailAddress> of( InternetAddress[] addresses ) {
+        List<MailAddress> result = new ArrayList<>();
+        if( addresses != null ) {
+            for( InternetAddress address : addresses )
+                result.add( new MailAddress( address.getPersonal(), address.getAddress() ) );
+            return result;
+        }
         return result;
     }
 

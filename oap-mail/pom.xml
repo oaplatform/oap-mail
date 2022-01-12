@@ -38,6 +38,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javax.mail}</version>
+        </dependency>
+        <dependency>
             <groupId>oap</groupId>
             <artifactId>oap-stdlib</artifactId>
             <version>${oap.deps.oap.version}</version>
