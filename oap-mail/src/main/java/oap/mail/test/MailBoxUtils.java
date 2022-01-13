@@ -66,15 +66,13 @@ public class MailBoxUtils {
     }
 
     public static Message getMessageFromBox( Folder inbox ) {
-        Message message;
         try {
             // get last sent message
             javax.mail.Message inboxMessage = inbox.getMessage( inbox.getMessageCount() );
-            message = convertMessage( inboxMessage );
+            return convertMessage( inboxMessage );
         } catch( Exception e ) {
             throw new RuntimeException( e );
         }
-        return message;
     }
 
     @SneakyThrows

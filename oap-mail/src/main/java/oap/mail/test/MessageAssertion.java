@@ -21,7 +21,7 @@ public final class MessageAssertion extends AbstractAssert<MessageAssertion, Mes
     }
 
     @SneakyThrows
-    public static MessageAssertion assertThatInboxHasMessage( String mail, String password ) {
+    public static MessageAssertion assertThatMessageSentInTheBox( String mail, String password ) {
         Folder inbox = MailBoxUtils.connectToInbox( mail, password );
         Message message = MailBoxUtils.getMessageFromBox( inbox );
         inbox.close();

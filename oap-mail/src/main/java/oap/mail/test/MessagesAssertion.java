@@ -25,7 +25,7 @@ public final class MessagesAssertion extends AbstractIterableAssert<MessagesAsse
     }
 
     @Nonnull
-    public static MessagesAssertion assertMessagesSentInTheBox( String user, String password ) {
+    public static MessagesAssertion assertThatMessagesSentInTheBox( String user, String password ) {
         Folder inbox = MailBoxUtils.connectToInbox( user, password );
         List<Message> messages = MailBoxUtils.getMessagesFromBox( inbox );
         return new MessagesAssertion( messages );

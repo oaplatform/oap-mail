@@ -26,8 +26,8 @@ package oap.mail;
 import oap.io.Resources;
 import oap.mail.test.MessageAssertion;
 
-import static oap.mail.test.MessageAssertion.assertThatInboxHasMessage;
-import static oap.mail.test.MessagesAssertion.assertMessagesSentInTheBox;
+import static oap.mail.test.MessageAssertion.assertThatMessageSentInTheBox;
+import static oap.mail.test.MessagesAssertion.assertThatMessagesSentInTheBox;
 
 public class TestGMail {
 
@@ -46,15 +46,15 @@ public class TestGMail {
             template.bind( "logo",
                 "https://assets.coingecko.com/coins/images/4552/small/0xcert.png?1547039841" );
             Message message = template.buildMessage();
-            message.from = MailAddress.of( "Україна", "ihor.lytvyn@xenoss.io" );
-            message.to.add( MailAddress.of( "Little Green Mail", "ihor.lytvyn@xenoss.io" ) );
+            message.from = MailAddress.of( "Україна", "vladimir.kirichenko@gmail.com" );
+            message.to.add( MailAddress.of( "Little Green Mail", "vk@xenoss.io" ) );
             mailman.send( message );
             mailman.run();
 
-            assertThatInboxHasMessage( authenticator.username, authenticator.password )
+            assertThatMessageSentInTheBox( authenticator.username, authenticator.password )
                 .hasSubject( "[japanese xtest] サーバの接続が切断されました" );
 
-            assertMessagesSentInTheBox( authenticator.username, authenticator.password )
+            assertThatMessagesSentInTheBox( authenticator.username, authenticator.password )
                 .bySubject( "[japanese xtest] サーバの接続が切断されました", MessageAssertion::assertMessage );
         }, () -> {
             throw new RuntimeException( "see javadoc!" );
