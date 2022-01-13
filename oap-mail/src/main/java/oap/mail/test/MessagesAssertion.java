@@ -6,6 +6,8 @@ import oap.util.Stream;
 import org.assertj.core.api.AbstractIterableAssert;
 
 import javax.annotation.Nonnull;
+import javax.mail.Folder;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -19,6 +21,13 @@ public final class MessagesAssertion extends AbstractIterableAssert<MessagesAsse
 
     @Nonnull
     public static MessagesAssertion assertMessages( @Nonnull Iterable<? extends Message> messages ) {
+        return new MessagesAssertion( messages );
+    }
+
+    @Nonnull
+    public static MessagesAssertion assertMessagesSentInTheBox( String user, String password ) {
+        Folder inbox = MailBoxUtils.connectToInbox( user, password );
+        List<Message> messages = MailBoxUtils.getMessagesFromBox( inbox );
         return new MessagesAssertion( messages );
     }
 
