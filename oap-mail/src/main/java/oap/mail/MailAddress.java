@@ -26,8 +26,12 @@ package oap.mail;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import org.apache.commons.lang.ArrayUtils;
 
 import javax.mail.internet.InternetAddress;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -50,6 +54,16 @@ public class MailAddress {
         MailAddress[] result = new MailAddress[mails.length];
         for( int i = 0; i < mails.length; i++ ) result[i] = new MailAddress( mails[i] );
         return result;
+    }
+
+    public static MailAddress of( InternetAddress address ) {
+        return new MailAddress( address.getPersonal(), address.getAddress() );
+    }
+
+    public static List<MailAddress> of( InternetAddress[] addresses ) {
+        if( ArrayUtils.isEmpty( addresses ) ) {
+            return Collections.emptyList();
+        } else return Stream.of( addresses ).map( MailAddress::of ).toList();
     }
 
     public static MailAddress of( String personal, String address ) {

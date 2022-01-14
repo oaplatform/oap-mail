@@ -1,11 +1,14 @@
 package oap.mail.test;
 
+import lombok.SneakyThrows;
 import oap.mail.Message;
 import oap.util.Lists;
 import oap.util.Stream;
 import org.assertj.core.api.AbstractIterableAssert;
 
 import javax.annotation.Nonnull;
+import javax.mail.Folder;
+import javax.mail.MessagingException;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -20,6 +23,13 @@ public final class MessagesAssertion extends AbstractIterableAssert<MessagesAsse
     @Nonnull
     public static MessagesAssertion assertMessages( @Nonnull Iterable<? extends Message> messages ) {
         return new MessagesAssertion( messages );
+    }
+
+    @SneakyThrows( MessagingException.class )
+    public static MessagesAssertion assertInbox( String user, String password ) {
+        try( Folder inbox = MailBox.connectToInbox( user, password ) ) {
+            return new MessagesAssertion( MailBox.getMessagesFromBox( inbox ) );
+        }
     }
 
     @Nonnull

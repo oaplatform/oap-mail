@@ -1,8 +1,11 @@
 package oap.mail.test;
 
+import lombok.SneakyThrows;
 import oap.mail.Message;
 import org.assertj.core.api.AbstractAssert;
 
+import javax.mail.Folder;
+import javax.mail.MessagingException;
 import java.util.Map;
 
 import static oap.testng.Asserts.assertString;
@@ -16,6 +19,13 @@ public final class MessageAssertion extends AbstractAssert<MessageAssertion, Mes
 
     public static MessageAssertion assertMessage( Message message ) {
         return new MessageAssertion( message );
+    }
+
+    @SneakyThrows( MessagingException.class )
+    public static MessageAssertion assertInboxMostRecentMessage( String mail, String password ) {
+        try( Folder inbox = MailBox.connectToInbox( mail, password ) ) {
+            return new MessageAssertion( MailBox.getLastSentMessageFromTheBox( inbox ) );
+        }
     }
 
     public MessageAssertion isFrom( String email ) {
