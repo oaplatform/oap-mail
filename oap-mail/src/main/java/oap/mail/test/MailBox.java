@@ -25,57 +25,46 @@
 package oap.mail.test;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import oap.mail.MailAddress;
 import oap.mail.Message;
 
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class MailBoxUtils {
+@Slf4j
+public class MailBox {
+
+    @SneakyThrows( MessagingException.class )
     public static List<Message> getMessagesFromBox( Folder inbox ) {
-        List<Message> messages = new ArrayList<>();
-        try {
-            javax.mail.Message[] inboxMessages = inbox.search(
-                new FlagTerm( new Flags( Flags.Flag.SEEN ), false ) );
+        javax.mail.Message[] inboxMessages = inbox.search(
+            new FlagTerm( new Flags( Flags.Flag.SEEN ), false ) );
 
-            // Sort messages from recent to oldest
-            Arrays.sort( inboxMessages, ( m1, m2 ) -> {
-                try {
-                    return m2.getSentDate().compareTo( m1.getSentDate() );
-                } catch( MessagingException e ) {
-                    throw new RuntimeException( e );
-                }
-            } );
-
-            for( javax.mail.Message m : inboxMessages ) {
-                messages.add( convertMessage( m ) );
-            }
-            return messages;
-        } catch( Exception e ) {
-            throw new RuntimeException( e );
-        }
+        return Stream.of( inboxMessages )
+            .sorted( Comparator.comparing( MailBox::getSentDate ) )
+            .map( MailBox::convertMessage )
+            .collect( Collectors.toList() );
     }
 
-    public static Message getMessageFromBox( Folder inbox ) {
-        try {
-            // get last sent message
-            javax.mail.Message inboxMessage = inbox.getMessage( inbox.getMessageCount() );
-            return convertMessage( inboxMessage );
-        } catch( Exception e ) {
-            throw new RuntimeException( e );
-        }
+    @SneakyThrows( MessagingException.class )
+    public static Message getLastSentMessageFromTheBox( Folder inbox ) {
+        return convertMessage( inbox.getMessage( inbox.getMessageCount() ) );
     }
 
-    @SneakyThrows
+    @SneakyThrows( { MessagingException.class, IOException.class } )
     public static Message convertMessage( javax.mail.Message source ) {
         Message target = new Message( source.getSubject(), source.getContent().toString().trim(), null );
         target.from = MailAddress.of( ( InternetAddress ) source.getFrom()[0] );
@@ -85,7 +74,7 @@ public class MailBoxUtils {
         return target;
     }
 
-
+    @SneakyThrows( { NoSuchProviderException.class, MessagingException.class } )
     public static Folder connectToInbox( String mail, String password ) {
         Properties properties = new Properties();
 
@@ -99,17 +88,22 @@ public class MailBoxUtils {
         Session emailSession = Session.getDefaultInstance( properties );
         Folder inbox = null;
 
+        // create the imap store object and connect to the imap server
+        Store store = emailSession.getStore( "imaps" );
+
+        store.connect( "imap.gmail.com", mail, password );
+
+        // create the inbox object and open it
+        inbox = store.getFolder( "Inbox" );
+        inbox.open( Folder.READ_WRITE );
+        return inbox;
+    }
+
+    private static Date getSentDate( javax.mail.Message message ) {
         try {
-            // create the imap store object and connect to the imap server
-            Store store = emailSession.getStore( "imaps" );
-
-            store.connect( "imap.gmail.com", mail, password );
-
-            // create the inbox object and open it
-            inbox = store.getFolder( "Inbox" );
-            inbox.open( Folder.READ_WRITE );
-            return inbox;
+            return message.getSentDate();
         } catch( MessagingException e ) {
+            log.error( "Can't get date from javax message", e );
             throw new RuntimeException( e );
         }
     }

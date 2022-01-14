@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.stream.Collectors.toList;
 
 @EqualsAndHashCode
 public class MailAddress {
@@ -64,7 +63,7 @@ public class MailAddress {
     public static List<MailAddress> of( InternetAddress[] addresses ) {
         if( ArrayUtils.isEmpty( addresses ) ) {
             return Collections.emptyList();
-        } else return Stream.of( addresses ).map( MailAddress::of ).collect( toList() );
+        } else return Stream.of( addresses ).map( MailAddress::of ).toList();
     }
 
     public static MailAddress of( String personal, String address ) {

@@ -25,9 +25,7 @@ package oap.mail;
 
 import oap.io.Resources;
 import oap.mail.test.MessageAssertion;
-
-import static oap.mail.test.MessageAssertion.assertThatMessageSentInTheBox;
-import static oap.mail.test.MessagesAssertion.assertThatMessagesSentInTheBox;
+import oap.mail.test.MessagesAssertion;
 
 public class TestGMail {
 
@@ -51,10 +49,10 @@ public class TestGMail {
             mailman.send( message );
             mailman.run();
 
-            assertThatMessageSentInTheBox( authenticator.username, authenticator.password )
+            MessageAssertion.assertInboxMostRecentMessage( authenticator.username, authenticator.password )
                 .hasSubject( "[japanese xtest] サーバの接続が切断されました" );
 
-            assertThatMessagesSentInTheBox( authenticator.username, authenticator.password )
+            MessagesAssertion.assertInbox( authenticator.username, authenticator.password )
                 .bySubject( "[japanese xtest] サーバの接続が切断されました", MessageAssertion::assertMessage );
         }, () -> {
             throw new RuntimeException( "see javadoc!" );
