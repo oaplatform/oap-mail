@@ -53,7 +53,7 @@
     </modules>
 
     <properties>
-        <oap-mail.project.version>17.5.2.0</oap-mail.project.version>
+        <oap-mail.project.version>17.6.2.0</oap-mail.project.version>
 
         <oap.deps.oap.version>17.9.18.7</oap.deps.oap.version>
 
