@@ -49,6 +49,7 @@ public class VelocityTemplateTransformer {
 
     public VelocityTemplateTransformer() {
         try {
+            // note: engine supports many values per single key
             engine.addProperty( "userdirective", XPathDirective.class.getName() );
             engine.addProperty( "userdirective", FormatDateDirective.class.getName() );
             engine.addProperty( UBERSPECT_CLASSNAME, Uberspector.class.getName() );
@@ -62,14 +63,16 @@ public class VelocityTemplateTransformer {
         }
     }
 
-    public synchronized String transform( Template template ) {
+    public String transform( Template template ) {
         try {
             VelocityContext context = new VelocityContext();
             Map<String, Object> parameters = template.getParameters();
             for( String key : parameters.keySet() )
                 context.put( key, parameters.get( key ) );
             StringWriter writer = new StringWriter();
-            engine.evaluate( context, writer, "mail", template.getContent() );
+            synchronized( this ) {
+                engine.evaluate( context, writer, "mail", template.getContent() );
+            }
             writer.close();
             return writer.toString();
         } catch( ParseErrorException | MethodInvocationException | ResourceNotFoundException | IOException e ) {
