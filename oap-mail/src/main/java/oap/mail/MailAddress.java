@@ -63,7 +63,8 @@ public class MailAddress {
     public static List<MailAddress> of( InternetAddress[] addresses ) {
         if( ArrayUtils.isEmpty( addresses ) ) {
             return Collections.emptyList();
-        } else return Stream.of( addresses ).map( MailAddress::of ).toList();
+        }
+        return Stream.of( addresses ).map( MailAddress::of ).toList();
     }
 
     public static MailAddress of( String personal, String address ) {
@@ -72,7 +73,8 @@ public class MailAddress {
 
     @SneakyThrows
     public InternetAddress toInternetAddress() {
-        return personal == null ? new InternetAddress( mail )
+        return personal == null
+            ? new InternetAddress( mail )
             : new InternetAddress( mail, personal, UTF_8.toString() );
     }
 
