@@ -47,6 +47,17 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class MailBox {
+    private static Properties constructGmailProperties() {
+        Properties properties = new Properties();
+
+        properties.put( "mail.imap.port", "993" );
+        properties.put( "mail.imap.host", "imap.gmail.com" );
+        properties.put( "mail.imap.ssl.trust", "imap.gmail.com" );
+        properties.put( "mail.imap.ssl.protocols", "TLSv1.2" );
+        properties.put( "mail.imap.starttls.enable", "true" );
+        properties.put( "mail.imap.starttls.required", "true" );
+        return properties;
+    }
 
     @SneakyThrows( MessagingException.class )
     public static List<Message> getMessagesFromBox( Folder inbox ) {
@@ -76,14 +87,7 @@ public class MailBox {
 
     @SneakyThrows( { NoSuchProviderException.class, MessagingException.class } )
     public static Folder connectToInbox( String mail, String password ) {
-        Properties properties = new Properties();
-
-        properties.put( "mail.imap.port", "993" );
-        properties.put( "mail.imap.host", "imap.gmail.com" );
-        properties.put( "mail.imap.ssl.trust", "imap.gmail.com" );
-        properties.put( "mail.imap.ssl.protocols", "TLSv1.2" );
-        properties.put( "mail.imap.starttls.enable", "true" );
-        properties.put( "mail.imap.starttls.required", "true" );
+        Properties properties = constructGmailProperties();
 
         Session emailSession = Session.getDefaultInstance( properties );
         Folder inbox = null;
@@ -91,7 +95,7 @@ public class MailBox {
         // create the imap store object and connect to the imap server
         Store store = emailSession.getStore( "imaps" );
 
-        store.connect( "imap.gmail.com", mail, password );
+        store.connect( properties.getProperty( "mail.imap.host" ), mail, password );
 
         // create the inbox object and open it
         inbox = store.getFolder( "Inbox" );
