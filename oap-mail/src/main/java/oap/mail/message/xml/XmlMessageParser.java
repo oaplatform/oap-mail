@@ -23,6 +23,7 @@
  */
 package oap.mail.message.xml;
 
+import lombok.extern.slf4j.Slf4j;
 import oap.mail.MailException;
 import oap.mail.Message;
 import oap.mail.message.MessageParser;
@@ -36,6 +37,8 @@ import java.io.IOException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+
+@Slf4j
 public class XmlMessageParser implements MessageParser {
     public Message parse( String content ) {
         try {
@@ -44,6 +47,7 @@ public class XmlMessageParser implements MessageParser {
             parser.parse( new ByteArrayInputStream( content.getBytes( UTF_8 ) ), handler );
             return handler.getMessage();
         } catch( ParserConfigurationException | SAXException | IOException e ) {
+            log.trace( "Could not deserialize {}", content, e );
             throw new MailException( e );
         }
     }
