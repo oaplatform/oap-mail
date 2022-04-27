@@ -40,11 +40,15 @@ import javax.mail.internet.MimeMultipart;
 import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
 public class SmtpTransport implements oap.mail.Transport {
+
+    private static final Pattern CID_PATTERN = Pattern.compile( "[\"']cid:(.+)[\"']" );
+
     static {
         MailcapCommandMap mc = ( MailcapCommandMap ) CommandMap.getDefaultCommandMap();
         mc.addMailcap( "text/html;; x-java-content-handler=com.sun.mail.handlers.text_html" );
@@ -59,7 +63,7 @@ public class SmtpTransport implements oap.mail.Transport {
     public final int port;
     public final boolean tls;
     public final Authenticator authenticator;
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     public SmtpTransport( String host, int port, boolean tls, Authenticator authenticator ) {
         this( host, port, tls, authenticator, "TLSv1.2" );
@@ -96,12 +100,12 @@ public class SmtpTransport implements oap.mail.Transport {
             if( message.attachments.isEmpty() ) {
                 mimeMessage.setContent( message.body, message.contentType + "; charset=UTF-8" );
             } else {
-                HashSet<String> cidIds = new HashSet<>();
+                Set<String> cidIds = new HashSet<>();
                 MimeMultipart multipart;
                 if( "text/html".equalsIgnoreCase( message.contentType ) ) {
                     multipart = new Attachments.HtmlMimeMultipart();
                     try {
-                        Matcher m = Pattern.compile( "[\"']cid:(.+)[\"']" ).matcher( message.body );
+                        Matcher m = CID_PATTERN.matcher( message.body );
                         while( m.find() )
                             cidIds.add( m.group( 1 ) );
                     } catch( Exception e ) {
