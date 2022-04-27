@@ -37,7 +37,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
+import java.util.Set;
 
 import static org.w3c.dom.Node.ATTRIBUTE_NODE;
 import static org.w3c.dom.Node.CDATA_SECTION_NODE;
@@ -47,7 +47,7 @@ import static org.w3c.dom.Node.TEXT_NODE;
 
 @Slf4j
 public class XPathDirective extends Directive {
-    private static final List<Short> TEXT_NODES = List.of( TEXT_NODE, ATTRIBUTE_NODE, COMMENT_NODE, CDATA_SECTION_NODE, PROCESSING_INSTRUCTION_NODE );
+    private static final Set<Short> TEXT_NODES = Set.of( TEXT_NODE, ATTRIBUTE_NODE, COMMENT_NODE, CDATA_SECTION_NODE, PROCESSING_INSTRUCTION_NODE );
 
     public String getName() {
         return "xpath";
@@ -70,7 +70,7 @@ public class XPathDirective extends Directive {
                 else context.put( var, element );
             else log.warn( "for " + xpath + " nothing found" );
         } catch( XPathExpressionException e ) {
-            throw new IOException( "cannot evaluate xpath: " + e.getMessage() );
+            throw new IOException( "cannot evaluate xpath: " + xpath, e );
         }
         return true;
     }
