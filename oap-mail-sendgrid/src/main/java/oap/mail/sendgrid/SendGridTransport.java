@@ -65,8 +65,7 @@ public class SendGridTransport implements Transport {
                 request.setBody( mail.build() );
                 sendGrid.api( request );
             } catch( Exception e ) {
-                log.error( "failed to send {}", message );
-                log.error( e.getMessage(), e );
+                log.error( "failed to send {}", message, e );
             }
         }
     }

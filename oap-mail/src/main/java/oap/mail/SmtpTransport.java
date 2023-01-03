@@ -59,7 +59,7 @@ public class SmtpTransport implements oap.mail.Transport {
     public final int port;
     public final boolean tls;
     public final Authenticator authenticator;
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     public SmtpTransport( String host, int port, boolean tls, Authenticator authenticator ) {
         this( host, port, tls, authenticator, "TLSv1.2" );

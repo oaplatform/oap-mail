@@ -33,7 +33,6 @@ import org.w3c.dom.Node;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.Writer;
@@ -69,8 +68,8 @@ public class XPathDirective extends Directive {
                     context.put( var, element.getTextContent() );
                 else context.put( var, element );
             else log.warn( "for " + xpath + " nothing found" );
-        } catch( XPathExpressionException e ) {
-            throw new IOException( "cannot evaluate xpath: " + e.getMessage() );
+        } catch( Exception e ) {
+            throw new IOException( "cannot evaluate xpath: " + xpath, e );
         }
         return true;
     }

@@ -97,7 +97,8 @@ public class Template {
     }
 
     public static Optional<Template> of( Path path ) {
-        return path.toFile().exists() ? Optional.of( new Template( Type.of( path ), Files.readString( path ) ) )
+        return path.toFile().exists()
+            ? Optional.of( new Template( Type.of( path ), Files.readString( path ) ) )
             : Optional.empty();
     }
 }

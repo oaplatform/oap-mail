@@ -67,7 +67,7 @@ public class Attachments {
             if( attachment.getFile() == null ) mt.setParameter( "charset", "UTF-8" );
             return mt.toString();
         } catch( MimeTypeParseException e ) {
-            throw new MessagingException( "bad content type", e );
+            throw new MessagingException( "bad content type " + attachment.getContentType(), e );
         }
     }
 

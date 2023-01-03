@@ -26,25 +26,23 @@ package oap.mail.message.xml;
 import oap.mail.MailException;
 import oap.mail.Message;
 import oap.mail.message.MessageParser;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class XmlMessageParser implements MessageParser {
+
+    @Override
     public Message parse( String content ) {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             SaxMessageParser handler = new SaxMessageParser();
             parser.parse( new ByteArrayInputStream( content.getBytes( UTF_8 ) ), handler );
             return handler.getMessage();
-        } catch( ParserConfigurationException | SAXException | IOException e ) {
-            throw new MailException( e );
+        } catch( Exception e ) {
+            throw new MailException( "Cannot parse: " + content, e );
         }
     }
 }

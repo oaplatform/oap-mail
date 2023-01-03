@@ -66,7 +66,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
+            <artifactId>velocity-engine-core</artifactId>
             <version>${oap.deps.apache.velocity.version}</version>
         </dependency>
         <dependency>

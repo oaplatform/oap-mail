@@ -28,6 +28,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import oap.mail.MailAddress;
 import oap.mail.Message;
+import org.jetbrains.annotations.NotNull;
 
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -47,6 +48,21 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class MailBox {
+
+    private static final Properties defaultProperties = createDefaultProperties();
+
+    @NotNull
+    private static Properties createDefaultProperties() {
+        Properties properties = new Properties();
+
+        properties.put( "mail.imap.port", "993" );
+        properties.put( "mail.imap.host", "imap.gmail.com" );
+        properties.put( "mail.imap.ssl.trust", "imap.gmail.com" );
+        properties.put( "mail.imap.ssl.protocols", "TLSv1.2" );
+        properties.put( "mail.imap.starttls.enable", "true" );
+        properties.put( "mail.imap.starttls.required", "true" );
+        return properties;
+    }
 
     @SneakyThrows( MessagingException.class )
     public static List<Message> getMessagesFromBox( Folder inbox ) {
@@ -76,16 +92,7 @@ public class MailBox {
 
     @SneakyThrows( { NoSuchProviderException.class, MessagingException.class } )
     public static Folder connectToInbox( String mail, String password ) {
-        Properties properties = new Properties();
-
-        properties.put( "mail.imap.port", "993" );
-        properties.put( "mail.imap.host", "imap.gmail.com" );
-        properties.put( "mail.imap.ssl.trust", "imap.gmail.com" );
-        properties.put( "mail.imap.ssl.protocols", "TLSv1.2" );
-        properties.put( "mail.imap.starttls.enable", "true" );
-        properties.put( "mail.imap.starttls.required", "true" );
-
-        Session emailSession = Session.getDefaultInstance( properties );
+        Session emailSession = Session.getDefaultInstance( defaultProperties );
         Folder inbox = null;
 
         // create the imap store object and connect to the imap server

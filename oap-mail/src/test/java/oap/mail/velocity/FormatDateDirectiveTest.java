@@ -13,10 +13,10 @@ public class FormatDateDirectiveTest {
     @Test
     public void render() {
         Bean bean = new Bean();
-        Template template = new Template( TEXT, "--subject--\nsubj\n--body--\n#formatDate($o.d 'MMM dd, yyyy')\n" );
+        Template template = new Template( TEXT, "--subject--\nsubj\n--body--\n#formatDate($o.d 'yyyy-MM-dd')\n" );
         template.bind( "o", bean );
         Message message = template.buildMessage();
-        assertString( message.body ).isEqualTo( "Jan 01, 1970" );
+        assertString( message.body ).isEqualTo( "1970-01-01" );
     }
 
     public static class Bean {

@@ -25,6 +25,7 @@ package oap.mail.message;
 
 import oap.mail.Message;
 
+@FunctionalInterface
 public interface MessageParser {
     Message parse( String content );
 }

@@ -59,7 +59,7 @@ public class MailQueue {
     }
 
     public void add( Message message ) {
-        log.debug( "adding {}", message );
+        log.trace( "adding {}", message );
         queue.add( message );
     }
 
@@ -67,10 +67,11 @@ public class MailQueue {
         DateTime ttl = DateTime.now().minus( brokenMessageTTL );
         queue.removeIf( m -> {
             if( processor.test( m ) ) return true;
-            else if( m.created.isBefore( ttl ) ) {
-                log.debug( "removing expired {}", m );
+            if( m.created.isBefore( ttl ) ) {
+                log.debug( "removing expired message: {}", m );
                 return true;
-            } else return false;
+            }
+            return false;
         } );
         persist();
     }

@@ -28,14 +28,10 @@ import oap.mail.MailException;
 import oap.mail.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -72,7 +68,7 @@ public class VelocityTemplateTransformer {
             engine.evaluate( context, writer, "mail", template.getContent() );
             writer.close();
             return writer.toString();
-        } catch( ParseErrorException | MethodInvocationException | ResourceNotFoundException | IOException e ) {
+        } catch( Exception e ) {
             throw new MailException( e );
         }
     }
@@ -81,7 +77,6 @@ public class VelocityTemplateTransformer {
 
         @Override
         public void init( RuntimeServices runtimeServices ) {
-
         }
 
         @Override

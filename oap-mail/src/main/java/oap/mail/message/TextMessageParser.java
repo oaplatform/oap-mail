@@ -27,6 +27,7 @@ import oap.mail.Attachment;
 import oap.mail.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TextMessageParser implements MessageParser {
     public static final String SUBJECT = "--subject--";
@@ -35,10 +36,11 @@ public class TextMessageParser implements MessageParser {
 
     public Message parse( String content ) {
         String[] values = content.split( "[\n\r]*--body--[\n\r]*|[\n\r]*--subject--[\n\r]*|[\n\r]*--attachment--[\n\r]*" );
-
-        ArrayList<Attachment> attachments = new ArrayList<>();
-        for( int i = 3; i < values.length; i++ )
+        if ( values.length < 2 ) throw new IllegalArgumentException( "Cannot parse subject/body from: " + content );
+        List<Attachment> attachments = new ArrayList<>();
+        for( int i = 3; i < values.length; i++ ) {
             attachments.add( new Attachment( "text/plain", values[i] ) );
+        }
         return new Message( values[1], values[2], attachments );
     }
 }
