@@ -55,7 +55,7 @@
     <properties>
         <oap-mail.project.version>17.5.4.13</oap-mail.project.version>
 
-        <oap.deps.oap.version>17.10.37.18</oap.deps.oap.version>
+        <oap.deps.oap.version>17.11.0.0-shade_okhttp-1235</oap.deps.oap.version>
 
         <oap.deps.sendgrid.version>4.9.3</oap.deps.sendgrid.version>
         <oap.deps.lombok.version>1.18.24</oap.deps.lombok.version>
