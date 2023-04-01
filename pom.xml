@@ -54,7 +54,7 @@
 
     <properties>
         <oap-mail.project.version>18.6.1.0</oap-mail.project.version>
-        <oap.deps.oap.version>18.11.3.0</oap.deps.oap.version>
+        <oap.deps.oap.version>18.11.3.0-oap_kernel_Fix_for_service_that_implements_collection_interface-1718</oap.deps.oap.version>
 
         <oap.deps.sendgrid.version>4.9.3</oap.deps.sendgrid.version>
         <oap.deps.lombok.version>1.18.24</oap.deps.lombok.version>
