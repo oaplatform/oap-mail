@@ -26,6 +26,7 @@ package oap.mail;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import org.apache.commons.lang.ArrayUtils;
 
 import javax.mail.internet.InternetAddress;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@ToString
 @EqualsAndHashCode
 public class MailAddress {
     public final String personal;

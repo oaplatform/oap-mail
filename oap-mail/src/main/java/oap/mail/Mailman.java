@@ -28,22 +28,23 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Mailman implements Runnable {
-    private Transport transport;
-    private MailQueue queue;
+    private final Transport transport;
+    private final MailQueue queue;
 
     public Mailman( Transport transport, MailQueue queue ) {
+        super();
         this.transport = transport;
         this.queue = queue;
     }
 
     public void run() {
-        log.debug( "sending message queue, {} message(s)", queue.size() );
+        log.debug( "sending {} messages from queue ...", queue.size() );
         queue.processing( message -> {
             try {
                 transport.send( message );
                 return true;
             } catch( Exception e ) {
-                log.error( "Cannot send a message: " + message, e );
+                log.error( "Cannot send a message: {}", message, e );
                 return false;
             }
         } );

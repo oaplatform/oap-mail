@@ -24,17 +24,21 @@
 
 package oap.mail;
 
+import lombok.ToString;
+
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Properties;
 
+@ToString( exclude = { "password" } )
 public class PasswordAuthenticator extends Authenticator {
     public final String username;
     public final String password;
 
     public PasswordAuthenticator( String username, String password ) {
+        super();
         this.username = username;
         this.password = password;
     }
@@ -48,8 +52,7 @@ public class PasswordAuthenticator extends Authenticator {
     }
 
     public PasswordAuthenticator( Properties config ) {
-        this.username = config.getProperty( "username" );
-        this.password = config.getProperty( "password" );
+        this( config.getProperty( "username" ), config.getProperty( "password" ) );
     }
 
     @Override

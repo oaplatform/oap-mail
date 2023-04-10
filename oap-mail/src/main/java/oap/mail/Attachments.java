@@ -40,6 +40,7 @@ import java.net.URL;
 
 @Slf4j
 public class Attachments {
+
     static String makeMimeType( Attachment attachment ) throws MessagingException {
         String name = attachment.getName();
         if( name == null ) {
@@ -67,7 +68,7 @@ public class Attachments {
             if( attachment.getFile() == null ) mt.setParameter( "charset", "UTF-8" );
             return mt.toString();
         } catch( MimeTypeParseException e ) {
-            throw new MessagingException( "bad content type " + attachment.getContentType(), e );
+            throw new MessagingException( "bad content type: " + attachment.getContentType(), e );
         }
     }
 
@@ -78,7 +79,7 @@ public class Attachments {
             try {
                 this.setSubType( "related" );
             } catch( MessagingException e ) {
-                log.warn( e.toString(), e );
+                log.warn( "Cannot set 'related' sub type", e );
             }
         }
 
@@ -88,7 +89,7 @@ public class Attachments {
                 mt.setParameter( "type", "text/html" );
                 return mt.toString();
             } catch( MimeTypeParseException e ) {
-                log.warn( e.toString(), e );
+                log.warn( "Cannot get content type from: {}", super.getContentType(), e );
                 return super.getContentType();
             }
         }

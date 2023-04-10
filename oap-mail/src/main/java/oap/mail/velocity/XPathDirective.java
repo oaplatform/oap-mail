@@ -67,7 +67,7 @@ public class XPathDirective extends Directive {
                 if( TEXT_NODES.contains( element.getNodeType() ) )
                     context.put( var, element.getTextContent() );
                 else context.put( var, element );
-            else log.warn( "for " + xpath + " nothing found" );
+            else log.warn( "nothing found for xpath: " + xpath );
         } catch( Exception e ) {
             throw new IOException( "cannot evaluate xpath: " + xpath, e );
         }

@@ -24,6 +24,7 @@
 
 package oap.mail;
 
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import oap.util.Strings;
 
@@ -43,6 +44,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@ToString
 @Slf4j
 public class SmtpTransport implements oap.mail.Transport {
     static {
@@ -137,7 +139,7 @@ public class SmtpTransport implements oap.mail.Transport {
                 mimeMessage.setContent( multipart );
             }
             Transport.send( mimeMessage );
-            log.debug( "sent {}", message );
+            log.debug( "message {} is sent", message );
         } catch( MessagingException e ) {
             throw new MailException( e );
         }
