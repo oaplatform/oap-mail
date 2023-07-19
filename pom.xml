@@ -48,9 +48,9 @@
     </modules>
 
     <properties>
-        <oap-mail.project.version>18.6.1.10</oap-mail.project.version>
+        <oap-mail.project.version>18.6.1.9</oap-mail.project.version>
 
-        <oap.deps.oap.version>18.11.5.24</oap.deps.oap.version>
+        <oap.deps.oap.version>18.11.5.23</oap.deps.oap.version>
 
         <oap.deps.sendgrid.version>4.9.3</oap.deps.sendgrid.version>
         <oap.deps.lombok.version>1.18.28</oap.deps.lombok.version>
