@@ -93,4 +93,10 @@ public class MailQueue {
     public int size() {
         return queue.size();
     }
+
+    public void removeAll() {
+        log.trace( "removeAll" );
+        queue.clear();
+        persist();
+    }
 }
