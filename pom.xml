@@ -27,7 +27,7 @@
     <parent>
         <groupId>oap</groupId>
         <artifactId>oap.maven</artifactId>
-        <version>18.3.7.5</version>
+        <version>21.0.0</version>
     </parent>
 
     <name>oap-mail-parent</name>
@@ -38,7 +38,7 @@
     <repositories>
         <repository>
             <id>oap</id>
-            <url>https://mvn.oaplatform.org</url>
+            <url>https://artifacts.oaplatform.org/repository/maven/</url>
         </repository>
     </repositories>
 
@@ -48,9 +48,9 @@
     </modules>
 
     <properties>
-        <oap-mail.project.version>18.7.0</oap-mail.project.version>
+        <oap-mail.project.version>21.0.0</oap-mail.project.version>
 
-        <oap.deps.oap.version>18.13.0</oap.deps.oap.version>
+        <oap.deps.oap.version>21.0.0</oap.deps.oap.version>
 
         <oap.deps.sendgrid.version>4.9.3</oap.deps.sendgrid.version>
         <oap.deps.lombok.version>1.18.30</oap.deps.lombok.version>
