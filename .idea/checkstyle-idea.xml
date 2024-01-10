@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CheckStyle-IDEA" serialisationVersion="2">
-    <checkstyleVersion>8.7</checkstyleVersion>
-    <scanScope>JavaOnlyWithTests</scanScope>
-    <suppressErrors>true</suppressErrors>
+    <checkstyleVersion>10.10.0</checkstyleVersion>
+    <scanScope>JavaOnly</scanScope>
+    <copyLibs>true</copyLibs>
+    <scanBeforeCheckin>true</scanBeforeCheckin>
     <option name="thirdPartyClasspath" />
     <option name="activeLocationIds">
-      <option value="62816b97-f73e-4dd3-8875-58d127dbc90c" />
+      <option value="afe30dd8-be2e-4040-96fe-f882b8aab694" />
     </option>
     <option name="locations">
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
-        <ConfigurationLocation id="62816b97-f73e-4dd3-8875-58d127dbc90c" type="HTTP_URL" scope="All" description="OAP">https://raw.githubusercontent.com/oaplatform/oap-maven/master/.idea/checkstyle.xml</ConfigurationLocation>
+        <ConfigurationLocation id="afe30dd8-be2e-4040-96fe-f882b8aab694" type="HTTP_URL" scope="All" description="oap">https://raw.githubusercontent.com/oaplatform/oap-maven/master/.idea/checkstyle.xml</ConfigurationLocation>
       </list>
     </option>
   </component>
