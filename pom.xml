@@ -49,7 +49,7 @@
     </modules>
 
     <properties>
-        <oap-mail.project.version>21.1.0</oap-mail.project.version>
+        <oap-mail.project.version>21.1.1</oap-mail.project.version>
 
         <oap.deps.oap.version>21.2.0</oap.deps.oap.version>
 
