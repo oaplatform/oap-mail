@@ -28,15 +28,12 @@ import oap.mail.MailException;
 import oap.mail.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.log.LogChute;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import java.io.StringWriter;
 import java.util.Map;
 
 import static org.apache.velocity.runtime.RuntimeConstants.RESOURCE_LOADER;
-import static org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM;
 import static org.apache.velocity.runtime.RuntimeConstants.UBERSPECT_CLASSNAME;
 
 @Slf4j
@@ -48,7 +45,6 @@ public class VelocityTemplateTransformer {
             engine.addProperty( "userdirective", XPathDirective.class.getName() );
             engine.addProperty( "userdirective", FormatDateDirective.class.getName() );
             engine.addProperty( UBERSPECT_CLASSNAME, Uberspector.class.getName() );
-            engine.setProperty( RUNTIME_LOG_LOGSYSTEM, new Logger() );
             engine.setProperty( RESOURCE_LOADER, "classpath" );
             engine.setProperty( "classpath.resource.loader.class", ClasspathResourceLoader.class.getName() );
 
@@ -70,47 +66,6 @@ public class VelocityTemplateTransformer {
             return writer.toString();
         } catch( Exception e ) {
             throw new MailException( e );
-        }
-    }
-
-    private static class Logger implements LogChute {
-
-        @Override
-        public void init( RuntimeServices runtimeServices ) {
-        }
-
-        @Override
-        public void log( int level, String message ) {
-            switch( level ) {
-                case TRACE_ID -> log.trace( message );
-                case DEBUG_ID -> log.debug( message );
-                case INFO_ID -> log.info( message );
-                case WARN_ID -> log.warn( message );
-                case ERROR_ID -> log.error( message );
-            }
-        }
-
-        @Override
-        public void log( int level, String message, Throwable throwable ) {
-            switch( level ) {
-                case TRACE_ID -> log.trace( message, throwable );
-                case DEBUG_ID -> log.debug( message, throwable );
-                case INFO_ID -> log.info( message, throwable );
-                case WARN_ID -> log.warn( message, throwable );
-                case ERROR_ID -> log.error( message, throwable );
-            }
-        }
-
-        @Override
-        public boolean isLevelEnabled( int level ) {
-            return switch( level ) {
-                case TRACE_ID -> log.isTraceEnabled();
-                case DEBUG_ID -> log.isDebugEnabled();
-                case INFO_ID -> log.isInfoEnabled();
-                case WARN_ID -> log.isWarnEnabled();
-                case ERROR_ID -> log.isErrorEnabled();
-                default -> true;
-            };
         }
     }
 }

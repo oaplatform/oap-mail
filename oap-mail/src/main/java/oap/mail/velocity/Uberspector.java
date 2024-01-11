@@ -24,6 +24,7 @@
 
 package oap.mail.velocity;
 
+import lombok.SneakyThrows;
 import org.apache.velocity.runtime.parser.node.AbstractExecutor;
 import org.apache.velocity.util.introspection.Info;
 import org.apache.velocity.util.introspection.UberspectImpl;
@@ -32,7 +33,8 @@ import org.apache.velocity.util.introspection.VelPropertyGet;
 import java.lang.reflect.Field;
 
 public class Uberspector extends UberspectImpl {
-    public VelPropertyGet getPropertyGet( Object object, String name, Info i ) throws Exception {
+    @SneakyThrows
+    public VelPropertyGet getPropertyGet( Object object, String name, Info i ) {
         VelPropertyGet getter = super.getPropertyGet( object, name, i );
         try {
             getter.getMethodName();
