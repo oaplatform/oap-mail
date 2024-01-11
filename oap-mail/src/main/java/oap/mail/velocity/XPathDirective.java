@@ -57,7 +57,7 @@ public class XPathDirective extends Directive {
     }
 
     public boolean render( InternalContextAdapter context, Writer writer, org.apache.velocity.runtime.parser.node.Node node ) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
-        String var = node.jjtGetChild( 0 ).getFirstToken().image.substring( 1 );
+        String var = node.jjtGetChild( 0 ).getFirstTokenImage().substring( 1 );
         Node document = ( Node ) node.jjtGetChild( 1 ).value( context );
         String xpath = String.valueOf( node.jjtGetChild( 2 ).value( context ) );
         XPath xPath = XPathFactory.newInstance().newXPath();
